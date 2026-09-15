@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const selectNecessidade = document.getElementById('iamurel-necessidade');
     const inputNecessidadeOutro = document.getElementById('iamurel-necessidade-outro');
+    const msgArea = document.getElementById('iamurel-mensagem');
     
     if (selectNecessidade && inputNecessidadeOutro) {
         selectNecessidade.addEventListener('change', (e) => {
@@ -24,13 +25,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // CORREÇÃO: Função para ser chamada quando clicar em um pacote
+    // SISTEMA BLINDADO DE SELEÇÃO DO PACOTE
     window.selectPackage = function(packageName) {
         if (selectNecessidade && inputNecessidadeOutro) {
+            // Marca como Outro e revela o campo
             selectNecessidade.value = 'Outro';
             inputNecessidadeOutro.classList.remove('hidden');
             inputNecessidadeOutro.required = true;
+            // Preenche o campo secreto
             inputNecessidadeOutro.value = `Interesse no plano: ${packageName}`;
+        }
+        
+        if (msgArea) {
+            // Preenche a caixa grande também para o usuário ter certeza
+            msgArea.value = `Olá! Tenho interesse no pacote ${packageName}. Gostaria de entender como podemos avançar... `;
+            msgArea.focus(); // Puxa a tela para a caixa e pisca o cursor
         }
     };
 
