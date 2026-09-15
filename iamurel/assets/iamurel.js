@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const leadForm = document.getElementById('iamurel-lead-form');
     const formMessage = document.getElementById('iamurel-form-message');
 
-    // Nova função: Carrega as configurações visuais do banco de dados
     async function loadSettings() {
         try {
             const { data: settings, error } = await iamurelSupabase
@@ -13,26 +12,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 .single();
 
             if (settings) {
-                // Aplica a Logo se existir
                 const logoContainer = document.getElementById('iamurel-logo-container');
                 if (settings.logo_url && settings.logo_url.trim() !== '') {
                     logoContainer.innerHTML = `<img src="${settings.logo_url}" alt="IAMUREL" class="h-8 md:h-10 object-contain">`;
                 }
 
-                // Aplica Cores Customizadas
                 if (settings.primary_color) {
                     document.documentElement.style.setProperty('--primary-color', settings.primary_color);
                 }
 
-                // Atualiza Textos do Hero
                 if (settings.hero_title) document.getElementById('iamurel-hero-title').innerHTML = settings.hero_title;
                 if (settings.hero_subtitle) document.getElementById('iamurel-hero-subtitle').innerText = settings.hero_subtitle;
 
-                // Aplica Links de Contato no HTML (botões do WhatsApp e Email)
                 const wppButtons = document.querySelectorAll('.link-whatsapp');
-                wppButtons.forEach(btn => {
-                    if (settings.contact_whatsapp) btn.href = `https://wa.me/${settings.contact_whatsapp.replace(/\D/g,'')}`;
-                });
+                if (settings.contact_whatsapp && settings.contact_whatsapp.trim() !== '') {
+                    wppButtons.forEach(btn => {
+                        btn.href = `https://wa.me/${settings.contact_whatsapp.replace(/\D/g,'')}`;
+                        btn.classList.remove('hidden');
+                    });
+                }
+
+                const emailButtons = document.querySelectorAll('.link-email');
+                if (settings.contact_email && settings.contact_email.trim() !== '') {
+                    emailButtons.forEach(btn => {
+                        btn.href = `mailto:${settings.contact_email}`;
+                        btn.classList.remove('hidden');
+                    });
+                }
+
+                const instButtons = document.querySelectorAll('.link-instagram');
+                if (settings.contact_instagram && settings.contact_instagram.trim() !== '') {
+                    instButtons.forEach(btn => {
+                        btn.href = settings.contact_instagram;
+                        btn.classList.remove('hidden');
+                    });
+                }
             }
         } catch (error) {
             console.error("Erro ao carregar configurações de aparência", error);
