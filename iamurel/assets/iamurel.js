@@ -3,6 +3,42 @@ document.addEventListener("DOMContentLoaded", () => {
     const leadForm = document.getElementById('iamurel-lead-form');
     const formMessage = document.getElementById('iamurel-form-message');
 
+    // Nova função: Carrega as configurações visuais do banco de dados
+    async function loadSettings() {
+        try {
+            const { data: settings, error } = await iamurelSupabase
+                .from('iamurel_site_settings')
+                .select('*')
+                .limit(1)
+                .single();
+
+            if (settings) {
+                // Aplica a Logo se existir
+                const logoContainer = document.getElementById('iamurel-logo-container');
+                if (settings.logo_url && settings.logo_url.trim() !== '') {
+                    logoContainer.innerHTML = `<img src="${settings.logo_url}" alt="IAMUREL" class="h-8 md:h-10 object-contain">`;
+                }
+
+                // Aplica Cores Customizadas
+                if (settings.primary_color) {
+                    document.documentElement.style.setProperty('--primary-color', settings.primary_color);
+                }
+
+                // Atualiza Textos do Hero
+                if (settings.hero_title) document.getElementById('iamurel-hero-title').innerHTML = settings.hero_title;
+                if (settings.hero_subtitle) document.getElementById('iamurel-hero-subtitle').innerText = settings.hero_subtitle;
+
+                // Aplica Links de Contato no HTML (botões do WhatsApp e Email)
+                const wppButtons = document.querySelectorAll('.link-whatsapp');
+                wppButtons.forEach(btn => {
+                    if (settings.contact_whatsapp) btn.href = `https://wa.me/${settings.contact_whatsapp.replace(/\D/g,'')}`;
+                });
+            }
+        } catch (error) {
+            console.error("Erro ao carregar configurações de aparência", error);
+        }
+    }
+
     async function loadPackages() {
         try {
             const { data: packages, error } = await iamurelSupabase
@@ -11,28 +47,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 .eq('is_published', true)
                 .order('sort_order', { ascending: true });
 
-            if (error) {
-                console.error("Supabase Error:", error);
-                throw error;
-            }
+            if (error) throw error;
 
             if (!packages || packages.length === 0) {
-                packagesContainer.innerHTML = '<p class="text-gray-400 col-span-full text-center">Nenhum pacote disponível no momento.</p>';
+                packagesContainer.innerHTML = '<p class="text-center col-span-full text-gray-500">Nenhum pacote disponível.</p>';
                 return;
             }
 
             packagesContainer.innerHTML = packages.map(pkg => `
-                <div class="glass-effect p-8 rounded-3xl flex flex-col hover:-translate-y-2 transition duration-300">
-                    <h4 class="text-2xl font-bold text-white mb-3">${pkg.name}</h4>
+                <div class="glass-panel p-8 flex flex-col hover:-translate-y-2 transition duration-300">
+                    <h4 class="text-2xl font-bold text-[#F6EEDC] mb-3">${pkg.name}</h4>
                     <p class="text-gray-400 mb-8 flex-grow leading-relaxed">${pkg.description || ''}</p>
-                    <div class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 mb-8">${pkg.price_value}</div>
-                    <a href="#iamurel-contato" class="w-full text-center glass-button text-white py-4 rounded-xl font-medium">Selecionar plano</a>
+                    <div class="text-3xl font-extrabold text-[#F6EEDC] mb-8">${pkg.price_value}</div>
+                    <a href="#contato" class="w-full text-center bg-[#F6EEDC] text-[#242322] py-4 rounded-xl font-bold hover:bg-white transition">Selecionar plano</a>
                 </div>
             `).join('');
-
         } catch (error) {
-            console.error("Erro completo ao carregar pacotes:", error);
-            packagesContainer.innerHTML = '<p class="text-red-400 text-center col-span-full">Verifique o console (F12) para ver o erro de conexão.</p>';
+            packagesContainer.innerHTML = '<p class="text-red-400 text-center col-span-full">Erro de conexão.</p>';
         }
     }
 
@@ -54,17 +85,16 @@ document.addEventListener("DOMContentLoaded", () => {
             const { error } = await iamurelSupabase.from('iamurel_leads').insert([newLead]);
 
             if (error) {
-                console.error("Erro ao salvar lead:", error);
-                formMessage.innerHTML = '<p class="text-red-400 mt-4">Falha ao conectar. Veja o console (F12).</p>';
+                formMessage.innerHTML = '<p class="text-red-400 mt-4">Falha ao conectar. Tente novamente.</p>';
             } else {
                 formMessage.innerHTML = '<p class="text-emerald-400 mt-4 font-bold">Mensagem enviada com sucesso! Entraremos em contato.</p>';
                 leadForm.reset();
             }
-            
-            submitBtn.textContent = 'Enviar Pedido';
+            submitBtn.textContent = 'Solicitar Orçamento';
             submitBtn.disabled = false;
         });
     }
 
+    loadSettings();
     loadPackages();
 });
