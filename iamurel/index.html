@@ -6,99 +6,150 @@
     <title>IAMUREL | Agência AI-First</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         html { scroll-behavior: smooth; }
         body { 
-            font-family: 'Inter', sans-serif; 
-            /* Fundo escuro sofisticado para destacar o vidro */
-            background: linear-gradient(135deg, #1e1e24 0%, #0f0f13 100%);
-            color: #F6EEDC;
-            min-height: 100vh;
+            font-family: 'DM Sans', sans-serif; 
+            background-color: #242322; /* Preto suave minimalista */
+            color: #F6EEDC; /* Creme claro para contraste elegante */
+            overflow-x: hidden;
         }
-        /* Classe utilitária para o Liquid Glass Otimizado */
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        
+        /* Efeito Liquid Glass Otimizado */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
         }
-        /* Botão com efeito de vidro destacado */
-        .glass-button {
-            background: rgba(59, 130, 246, 0.2);
-            border: 1px solid rgba(59, 130, 246, 0.5);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-        .glass-button:hover {
-            background: rgba(59, 130, 246, 0.4);
-            transform: translateY(-2px);
-        }
-        /* Inputs transparentes */
+
         .glass-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            transition: border 0.3s ease;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #F6EEDC;
+            border-radius: 12px;
+            transition: all 0.3s ease;
         }
         .glass-input:focus {
             outline: none;
-            border-color: #3b82f6;
-            background: rgba(255, 255, 255, 0.1);
+            border-color: #F6EEDC;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Animações de entrada suaves */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Blobs decorativos sutis ao fundo */
+        .ambient-light {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
         }
     </style>
 </head>
-<body id="iamurel-body">
+<body id="iamurel-body" class="relative">
 
-    <header class="fixed w-full top-0 z-50 glass-effect border-b-0">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 id="iamurel-logo-text" class="text-2xl font-bold tracking-tighter text-white">IAMUREL</h1>
-            <nav class="hidden md:flex gap-6">
-                <a href="#iamurel-metodo" class="text-gray-300 hover:text-white transition">O Método</a>
-                <a href="#iamurel-pacotes" class="text-gray-300 hover:text-white transition">Pacotes</a>
+    <!-- Luzes de fundo -->
+    <div class="ambient-light bg-blue-500 w-[500px] h-[500px] top-[-100px] left-[-100px]"></div>
+    <div class="ambient-light bg-orange-500 w-[400px] h-[400px] top-[40%] right-[-100px]"></div>
+
+    <header class="fixed w-full top-0 z-50 glass-panel !border-x-0 !border-t-0 !rounded-none !backdrop-blur-md bg-opacity-70">
+        <div class="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
+            <h1 id="iamurel-logo-text" class="text-2xl font-bold tracking-tight text-[#F6EEDC]">IAMUREL</h1>
+            <nav class="hidden md:flex gap-8">
+                <a href="#metodo" class="text-gray-400 hover:text-[#F6EEDC] transition">O Método</a>
+                <a href="#solucoes" class="text-gray-400 hover:text-[#F6EEDC] transition">Soluções</a>
+                <a href="#pacotes" class="text-gray-400 hover:text-[#F6EEDC] transition">Pacotes</a>
             </nav>
-            <a href="#iamurel-contato" class="glass-button text-white px-6 py-2 rounded-full font-medium">Iniciar Projeto</a>
+            <a href="#contato" class="bg-[#F6EEDC] text-[#242322] px-6 py-2.5 rounded-full font-bold hover:bg-white transition shadow-lg">Iniciar Projeto</a>
         </div>
     </header>
 
     <main class="pt-32">
-        <section class="py-20 px-4 text-center max-w-4xl mx-auto">
-            <h2 id="iamurel-hero-title" class="text-5xl md:text-7xl font-extrabold mb-6 text-white tracking-tight">
-                Conteúdo com direção.<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Design com intenção.</span>
+        <!-- Hero Section -->
+        <section class="py-24 px-6 text-center max-w-5xl mx-auto animate-fade-up">
+            <h2 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-[1.1]">
+                Conteúdo com <span class="opacity-70">direção.</span><br>
+                Design com <span class="italic text-transparent bg-clip-text bg-gradient-to-r from-[#F6EEDC] to-gray-500">intenção.</span>
             </h2>
-            <p id="iamurel-hero-subtitle" class="text-xl text-gray-400 mb-12">Combinamos inteligência artificial, direção criativa e design gráfico para transformar ideias soltas em presença de marca.</p>
-            <a href="#iamurel-contato" class="glass-button text-white px-8 py-4 rounded-full font-bold text-lg inline-block">Falar sobre meu projeto</a>
+            <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+                IA acelera a exploração e produção. A direção criativa humana garante contexto, coerência e acabamento.
+            </p>
+            <a href="#contato" class="glass-panel text-[#F6EEDC] px-10 py-4 rounded-full font-bold text-lg inline-block hover:bg-white/5 transition">Ver como funciona</a>
         </section>
 
-        <section id="iamurel-pacotes" class="py-24 px-4">
+        <!-- Soluções (Estrutura iAgência) -->
+        <section id="solucoes" class="py-24 px-6 relative">
             <div class="max-w-6xl mx-auto">
-                <h3 class="text-3xl font-bold text-center mb-16 text-white">Planos de Aceleração</h3>
-                <div id="iamurel-packages-container" class="grid md:grid-cols-3 gap-8">
-                    <p class="text-center col-span-full text-gray-400">Buscando inteligência...</p>
+                <div class="mb-16">
+                    <h3 class="text-3xl font-bold mb-4">O que podemos criar</h3>
+                    <p class="text-gray-400">Soluções modulares para estruturar sua comunicação visual.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="glass-panel p-8">
+                        <h4 class="text-xl font-bold mb-3">Identidade Visual</h4>
+                        <p class="text-gray-400 text-sm">Logo, variações, paleta, tipografia e guia de uso.</p>
+                    </div>
+                    <div class="glass-panel p-8">
+                        <h4 class="text-xl font-bold mb-3">Conteúdo para Redes</h4>
+                        <p class="text-gray-400 text-sm">Posts, carrosséis e roteiros assistidos por IA.</p>
+                    </div>
+                    <div class="glass-panel p-8">
+                        <h4 class="text-xl font-bold mb-3">Design sob demanda</h4>
+                        <p class="text-gray-400 text-sm">Apresentações, materiais comerciais e peças digitais.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="iamurel-contato" class="py-24 px-4 relative">
-            <div class="max-w-3xl mx-auto glass-effect p-10 rounded-3xl relative z-10">
-                <h3 class="text-3xl font-bold mb-8 text-center text-white">Falar sobre um projeto</h3>
+        <!-- Pacotes Dinâmicos -->
+        <section id="pacotes" class="py-24 px-6 bg-black/20">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl font-bold mb-4">Planos Iniciais</h3>
+                    <p class="text-gray-400">Qual caminho se encaixa no seu momento?</p>
+                </div>
+                <!-- Container alimentado pelo JS -->
+                <div id="iamurel-packages-container" class="grid md:grid-cols-3 gap-8">
+                    <p class="text-center col-span-full text-gray-500">Conectando ao banco de dados...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formulário de Conversão -->
+        <section id="contato" class="py-24 px-6 relative">
+            <div class="max-w-3xl mx-auto glass-panel p-10 md:p-14">
+                <h3 class="text-3xl font-bold mb-8 text-center">Falar sobre um projeto</h3>
                 <form id="iamurel-lead-form" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <input type="text" id="iamurel-nome" placeholder="Seu Nome" required class="glass-input w-full p-4 rounded-xl">
-                        <input type="text" id="iamurel-telefone" placeholder="WhatsApp" required class="glass-input w-full p-4 rounded-xl">
+                        <input type="text" id="iamurel-nome" placeholder="Nome completo" required class="glass-input w-full p-4">
+                        <input type="text" id="iamurel-telefone" placeholder="WhatsApp" required class="glass-input w-full p-4">
                     </div>
-                    <input type="email" id="iamurel-email" placeholder="Seu E-mail" required class="glass-input w-full p-4 rounded-xl">
-                    <input type="text" id="iamurel-negocio" placeholder="Qual é o seu negócio?" required class="glass-input w-full p-4 rounded-xl">
-                    <textarea id="iamurel-mensagem" placeholder="Como podemos ajudar?" rows="4" required class="glass-input w-full p-4 rounded-xl"></textarea>
-                    <button type="submit" class="w-full glass-button text-white font-bold py-4 rounded-xl">Enviar Pedido</button>
+                    <input type="email" id="iamurel-email" placeholder="E-mail profissional" required class="glass-input w-full p-4">
+                    <input type="text" id="iamurel-negocio" placeholder="Qual é o seu negócio?" required class="glass-input w-full p-4">
+                    <textarea id="iamurel-mensagem" placeholder="Descreva brevemente o que você precisa..." rows="4" required class="glass-input w-full p-4"></textarea>
+                    <button type="submit" class="w-full bg-[#F6EEDC] text-[#242322] font-bold py-4 rounded-xl hover:bg-white transition">Solicitar Orçamento</button>
                 </form>
-                <div id="iamurel-form-message" class="text-center mt-4"></div>
+                <div id="iamurel-form-message" class="text-center mt-6"></div>
             </div>
-            
-            <!-- Elemento decorativo de fundo para reforçar o vidro fosco -->
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-600 rounded-full blur-[120px] opacity-20 z-0 pointer-events-none"></div>
         </section>
     </main>
+
+    <footer class="border-t border-white/10 py-8 text-center text-gray-500 text-sm">
+        <p>&copy; 2026 IAMUREL. Todos os direitos reservados.</p>
+    </footer>
 
     <script src="./assets/supabase-config.js"></script>
     <script src="./assets/iamurel.js"></script>
