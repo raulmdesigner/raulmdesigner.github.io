@@ -1,15 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     let currentLeads = [];
     let openedLeadId = null;
-    const views = { 
-        dashboard: document.getElementById('view-dashboard'),
-        inbox: document.getElementById('view-inbox'), 
-        packages: document.getElementById('view-packages'), 
-        cases: document.getElementById('view-cases'),
-        reviews: document.getElementById('view-reviews'),
-        faq: document.getElementById('view-faq'),
-        appearance: document.getElementById('view-appearance') 
-    };
 
     const PIPELINE_STATUSES = ['Novo', 'Qualificação', 'Contato iniciado', 'Briefing recebido', 'Proposta enviada', 'Negociação', 'Ganho', 'Perdido', 'Arquivado'];
 
@@ -34,15 +25,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById('btn-logout').addEventListener('click', () => iamurelSupabase.auth.signOut());
 
-    // CORREÇÃO: Navegação agora encontra os nomes exatos das telas
+    // SISTEMA DE NAVEGAÇÃO BLINDADO
     document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', function() {
+            // 1. Remove a cor ativa de todos os botões
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            Object.values(views).forEach(v => v.classList.add('hidden'));
+            // 2. Esconde TODAS as telas do painel
+            document.querySelectorAll('.content-view').forEach(v => v.classList.add('hidden'));
             
-            const targetId = e.target.id.replace('btn-nav-', '');
-            if (views[targetId]) views[targetId].classList.remove('hidden');
+            // 3. Ativa o botão clicado e mostra a tela correspondente
+            this.classList.add('active');
+            const targetViewId = this.id.replace('btn-nav-', 'view-');
+            const targetView = document.getElementById(targetViewId);
+            if (targetView) targetView.classList.remove('hidden');
         });
     });
 
@@ -54,6 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
         loadFaqAdmin();
         loadSettingsAdmin();
     }
+
+    // --- CRM E DASHBOARD LOGIC --- //
 
     async function loadLeads() {
         const { data } = await iamurelSupabase.from('iamurel_leads').select('*').order('created_at', { ascending: false });
