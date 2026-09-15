@@ -3,14 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel IAMUREL</title>
+    <title>IAMUREL Studio | Administração</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'DM Sans', sans-serif; 
+            background-color: #F6EEDC; 
+            color: #242322; 
+        }
+        .admin-glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+        }
+    </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white p-8 rounded shadow-md w-96 text-center">
-        <h2 class="text-2xl font-bold mb-4">Acesso Administrativo</h2>
-        <p class="text-gray-600 mb-6">Em breve implementaremos a interface de login seguro via Supabase Auth aqui.</p>
-        <a href="../" class="text-blue-600 hover:underline">Voltar ao site público</a>
+<body>
+
+    <!-- Tela de Login -->
+    <div id="iamurel-login-view" class="min-h-screen flex items-center justify-center p-4">
+        <div class="admin-glass p-10 rounded-2xl w-full max-w-md text-center">
+            <h2 class="text-3xl font-bold mb-2">IAMUREL</h2>
+            <p class="text-gray-500 mb-8">Acesso restrito à direção</p>
+            
+            <form id="iamurel-login-form" class="space-y-4">
+                <input type="email" id="login-email" placeholder="E-mail administrativo" required class="w-full p-4 rounded-xl border border-gray-200 bg-white">
+                <input type="password" id="login-password" placeholder="Senha" required class="w-full p-4 rounded-xl border border-gray-200 bg-white">
+                <button type="submit" class="w-full bg-[#242322] text-[#F6EEDC] font-bold py-4 rounded-xl hover:bg-black transition">Entrar no Studio</button>
+            </form>
+            <div id="login-error" class="text-red-500 mt-4 hidden"></div>
+        </div>
     </div>
+
+    <!-- Tela do Dashboard (Oculta por padrão) -->
+    <div id="iamurel-dashboard-view" class="min-h-screen hidden">
+        <!-- Navegação Superior -->
+        <header class="bg-[#242322] text-[#F6EEDC] p-4 flex justify-between items-center shadow-md">
+            <h1 class="text-xl font-bold">IAMUREL Studio</h1>
+            <div class="flex gap-4">
+                <button id="btn-logout" class="text-gray-400 hover:text-white transition">Sair do sistema</button>
+            </div>
+        </header>
+
+        <div class="flex">
+            <!-- Menu Lateral -->
+            <aside class="w-64 min-h-[calc(100vh-60px)] admin-glass border-r p-6 hidden md:block">
+                <nav class="space-y-2">
+                    <button class="w-full text-left px-4 py-3 bg-[#242322] text-[#F6EEDC] rounded-lg font-bold">Inbox (Leads)</button>
+                    <button class="w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg transition">Pacotes e Preços</button>
+                    <button class="w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg transition">Aparência do Site</button>
+                </nav>
+            </aside>
+
+            <!-- Área de Conteúdo Principal (Leads) -->
+            <main class="flex-1 p-8">
+                <h2 class="text-3xl font-bold mb-6">Solicitações de Orçamento</h2>
+                
+                <div class="admin-glass rounded-2xl overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b">
+                            <tr>
+                                <th class="p-4 font-bold text-gray-600">Cliente</th>
+                                <th class="p-4 font-bold text-gray-600">Negócio</th>
+                                <th class="p-4 font-bold text-gray-600">Data</th>
+                                <th class="p-4 font-bold text-gray-600">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leads-table-body" class="divide-y">
+                            <tr>
+                                <td colspan="4" class="p-8 text-center text-gray-500">Carregando contatos aguarde...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Importante notar que o caminho dos scripts sobe uma pasta (../) para acessar os assets -->
+    <script src="../assets/supabase-config.js"></script>
+    <script src="../assets/iamurel-admin.js"></script>
 </body>
 </html>
