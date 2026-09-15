@@ -1,15 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    
-    // Função utilitária para abrir/fechar as perguntas do FAQ
     window.toggleFaq = function(id) {
         const answer = document.getElementById(`faq-answer-${id}`);
-        const icon = document.getElementById(`faq-icon-${id}`);
         if (answer.style.maxHeight) {
             answer.style.maxHeight = null;
-            icon.style.transform = "rotate(0deg)";
         } else {
             answer.style.maxHeight = answer.scrollHeight + "px";
-            icon.style.transform = "rotate(45deg)";
         }
     };
 
@@ -22,32 +17,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     logoContainer.innerHTML = `<img src="${settings.logo_url}" alt="IAMUREL" class="h-8 md:h-10 object-contain">`;
                 }
 
-                if (settings.primary_color) document.documentElement.style.setProperty('--primary-color', settings.primary_color);
                 if (settings.hero_title) document.getElementById('iamurel-hero-title').innerHTML = settings.hero_title;
                 if (settings.hero_subtitle) document.getElementById('iamurel-hero-subtitle').innerText = settings.hero_subtitle;
 
-                // Contatos Externos (Fora do formulário)
-                if (settings.contact_whatsapp && settings.contact_whatsapp.trim() !== '') {
-                    document.querySelectorAll('.link-whatsapp').forEach(btn => {
-                        btn.href = `https://wa.me/${settings.contact_whatsapp.replace(/\D/g,'')}`;
-                        btn.classList.remove('hidden');
-                        btn.classList.add('flex');
-                    });
-                }
-                if (settings.contact_email && settings.contact_email.trim() !== '') {
-                    document.querySelectorAll('.link-email').forEach(btn => {
-                        btn.href = `mailto:${settings.contact_email}`;
-                        btn.classList.remove('hidden');
-                        btn.classList.add('flex');
-                    });
-                }
-                if (settings.contact_instagram && settings.contact_instagram.trim() !== '') {
-                    document.querySelectorAll('.link-instagram').forEach(btn => {
-                        btn.href = settings.contact_instagram;
-                        btn.classList.remove('hidden');
-                        btn.classList.add('flex');
-                    });
-                }
+                const applyLink = (selector, url) => {
+                    if (url && url.trim() !== '') {
+                        document.querySelectorAll(selector).forEach(btn => {
+                            btn.href = url;
+                            btn.classList.remove('hidden');
+                        });
+                    }
+                };
+                applyLink('.link-whatsapp', settings.contact_whatsapp ? `https://wa.me/${settings.contact_whatsapp.replace(/\D/g,'')}` : null);
+                applyLink('.link-email', settings.contact_email ? `mailto:${settings.contact_email}` : null);
+                applyLink('.link-instagram', settings.contact_instagram);
             }
         } catch (error) { console.error("Erro visual", error); }
     }
@@ -62,11 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         container.innerHTML = packages.map(pkg => `
-            <div class="glass-panel p-8 flex flex-col hover:-translate-y-2 transition duration-300">
-                <h4 class="text-2xl font-bold text-[#F6EEDC] mb-3">${pkg.name}</h4>
-                <p class="text-gray-400 mb-8 flex-grow leading-relaxed">${pkg.description || ''}</p>
-                <div class="text-3xl font-extrabold text-[#F6EEDC] mb-8">${pkg.price_value}</div>
-                <a href="#contato" onclick="document.getElementById('iamurel-diagnostico').value='Ainda não sei, preciso de ajuda';" class="w-full text-center bg-[#F6EEDC] text-[#242322] py-4 rounded-xl font-bold hover:bg-white transition">Selecionar plano</a>
+            <div class="glass-panel p-8 flex flex-col hover:-translate-y-2 transition duration-300 border-t-4 border-t-[#F6EEDC]">
+                <h4 class="text-2xl font-bold text-[#F6EEDC] mb-2">${pkg.name}</h4>
+                <p class="text-gray-400 mb-6 flex-grow text-sm leading-relaxed">${pkg.description || ''}</p>
+                <div class="text-3xl font-extrabold text-[#F6EEDC] mb-6">${pkg.price_value}</div>
+                <a href="#diagnostico" onclick="document.getElementById('iamurel-necessidade').value='Não tenho certeza, preciso de ajuda';" class="w-full text-center border border-[#F6EEDC] text-[#F6EEDC] py-3 rounded-xl font-bold hover:bg-[#F6EEDC] hover:text-[#242322] transition">Selecionar este</a>
             </div>
         `).join('');
     }
@@ -79,28 +62,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (cases && cases.length > 0) {
             section.classList.remove('hidden');
             container.innerHTML = cases.map(c => `
-                <div class="glass-panel overflow-hidden group">
-                    ${c.image_url ? `<div class="h-48 overflow-hidden"><img src="${c.image_url}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></div>` : ''}
+                <div class="glass-panel overflow-hidden">
+                    ${c.image_url ? `<div class="h-56 overflow-hidden"><img src="${c.image_url}" class="w-full h-full object-cover"></div>` : ''}
                     <div class="p-6">
                         <h4 class="font-bold text-xl mb-2">${c.title}</h4>
                         <p class="text-gray-400 text-sm leading-relaxed">${c.description}</p>
                     </div>
-                </div>
-            `).join('');
-        }
-    }
-
-    async function loadReviews() {
-        const section = document.getElementById('avaliacoes');
-        const container = document.getElementById('iamurel-reviews-container');
-        const { data: reviews } = await iamurelSupabase.from('iamurel_reviews').select('*').eq('is_published', true).order('created_at', {ascending: false});
-        
-        if (reviews && reviews.length > 0) {
-            section.classList.remove('hidden');
-            container.innerHTML = reviews.map(r => `
-                <div class="glass-panel p-8">
-                    <p class="text-gray-300 italic mb-6 leading-relaxed">"${r.review_text}"</p>
-                    <p class="font-bold text-[#F6EEDC]">— ${r.client_name}</p>
                 </div>
             `).join('');
         }
@@ -117,9 +84,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="glass-panel p-6 cursor-pointer" onclick="toggleFaq('${f.id}')">
                     <div class="flex justify-between items-center">
                         <h4 class="font-bold text-lg">${f.question}</h4>
-                        <span id="faq-icon-${f.id}" class="text-2xl font-bold transition-transform duration-300">+</span>
+                        <span class="text-xl font-bold text-gray-400">+</span>
                     </div>
-                    <div id="faq-answer-${f.id}" class="faq-answer mt-0">
+                    <div id="faq-answer-${f.id}" class="faq-answer">
                         <p class="text-gray-400 pt-4 leading-relaxed">${f.answer}</p>
                     </div>
                 </div>
@@ -132,36 +99,38 @@ document.addEventListener("DOMContentLoaded", () => {
         leadForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = leadForm.querySelector('button[type="submit"]');
-            btn.textContent = 'Enviando...'; btn.disabled = true;
-
-            const diagnostico = document.getElementById('iamurel-diagnostico').value;
-            const mensagemBruta = document.getElementById('iamurel-mensagem').value;
-            const mensagemFinal = `[Interesse: ${diagnostico}] \n\n${mensagemBruta}`;
+            btn.textContent = 'Processando...'; btn.disabled = true;
 
             const newLead = {
                 name: document.getElementById('iamurel-nome').value,
+                contact_info: document.getElementById('iamurel-email').value, // Fallback p/ campo antigo se existir
                 email: document.getElementById('iamurel-email').value,
                 phone: document.getElementById('iamurel-telefone').value,
                 business: document.getElementById('iamurel-negocio').value,
-                message: mensagemFinal
+                service_interest: document.getElementById('iamurel-necessidade').value,
+                estimated_budget: document.getElementById('iamurel-orcamento').value,
+                message: document.getElementById('iamurel-mensagem').value,
+                consent_given: document.getElementById('iamurel-consentimento').checked,
+                origin: 'Site Público - Diagnóstico',
+                status: 'Novo'
             };
 
             const { error } = await iamurelSupabase.from('iamurel_leads').insert([newLead]);
 
             const msgDiv = document.getElementById('iamurel-form-message');
             if (error) {
-                msgDiv.innerHTML = '<p class="text-red-400 mt-4 font-bold">Falha de conexão. Tente nossos canais rápidos acima.</p>';
+                msgDiv.innerHTML = '<p class="text-red-400 mt-4 font-bold">Falha de conexão. Verifique sua internet ou contate-nos via WhatsApp.</p>';
+                console.error(error);
             } else {
-                msgDiv.innerHTML = '<p class="text-emerald-400 mt-4 font-bold">Diagnóstico enviado com sucesso! Entraremos em contato.</p>';
+                msgDiv.innerHTML = '<p class="text-emerald-400 mt-4 font-bold text-lg">Diagnóstico recebido com sucesso! Nossa equipe analisará os dados e entrará em contato em breve.</p>';
                 leadForm.reset();
             }
-            btn.textContent = 'Solicitar Proposta'; btn.disabled = false;
+            btn.textContent = 'Enviar Diagnóstico'; btn.disabled = false;
         });
     }
 
     loadSettings();
     loadPackages();
     loadCases();
-    loadReviews();
     loadFaqs();
 });
