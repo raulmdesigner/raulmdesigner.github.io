@@ -34,12 +34,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById('btn-logout').addEventListener('click', () => iamurelSupabase.auth.signOut());
 
+    // CORREÇÃO: Navegação agora encontra os nomes exatos das telas
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             e.target.classList.add('active');
             Object.values(views).forEach(v => v.classList.add('hidden'));
-            const targetId = e.target.id.replace('btn-nav-', 'view-');
+            
+            const targetId = e.target.id.replace('btn-nav-', '');
             if (views[targetId]) views[targetId].classList.remove('hidden');
         });
     });
@@ -52,8 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
         loadFaqAdmin();
         loadSettingsAdmin();
     }
-
-    // --- CRM E DASHBOARD LOGIC --- //
 
     async function loadLeads() {
         const { data } = await iamurelSupabase.from('iamurel_leads').select('*').order('created_at', { ascending: false });
@@ -92,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('dash-conversao').textContent = conversao + '%';
     }
 
-    // Toggle Tabela e Kanban
     document.getElementById('btn-view-table').addEventListener('click', (e) => {
         document.getElementById('crm-table-container').classList.remove('hidden');
         document.getElementById('crm-kanban-container').classList.add('hidden');
@@ -111,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('btn-view-table').classList.replace('text-[#F6EEDC]', 'text-gray-600');
     });
 
-    // Busca Textual
     document.getElementById('search-lead').addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase();
         const filtered = currentLeads.filter(l => 
@@ -158,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <div onclick="window.openCrmModal('${l.id}')" class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:border-blue-400 hover:shadow-md transition">
                                 <p class="font-bold text-gray-800 text-sm mb-1">${l.name}</p>
                                 <p class="text-xs text-gray-500 uppercase truncate mb-2">${l.business}</p>
-                                <p class="text-xs font-bold text-blue-600 bg-blue-50 w-max px-2 py-1 rounded">${l.estimated_budget || 'Orçamento não definido'}</p>
+                                <p class="text-xs font-bold text-blue-600 bg-blue-50 w-max px-2 py-1 rounded">${l.estimated_budget || 'Sem orçamento'}</p>
                             </div>
                         `).join('')}
                     </div>
@@ -188,14 +186,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.closeCrmModal = function() { document.getElementById('crm-modal').classList.add('hidden'); openedLeadId = null; };
 
-    // Alteração de Status
     document.getElementById('modal-status-select').addEventListener('change', async (e) => {
         if (!openedLeadId) return;
         const newStatus = e.target.value;
         const idx = currentLeads.findIndex(l => l.id === openedLeadId);
         currentLeads[idx].status = newStatus;
         
-        // Criação de log histórico real
         const logEntry = { date: new Date().toISOString(), action: 'Status alterado para ' + newStatus };
         const newHistory = [...(currentLeads[idx].history_log || []), logEntry];
         currentLeads[idx].history_log = newHistory;
@@ -206,7 +202,6 @@ document.addEventListener("DOMContentLoaded", () => {
         await iamurelSupabase.from('iamurel_leads').update({ status: newStatus, history_log: newHistory }).eq('id', openedLeadId);
     });
 
-    // Salvar Notas
     document.getElementById('btn-save-notes').addEventListener('click', async () => {
         if (!openedLeadId) return;
         const notes = document.getElementById('modal-notes').value;
@@ -219,7 +214,6 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => msg.classList.add('hidden'), 2000);
     });
 
-    // --- CMS GENERIC FUNCTIONS --- //
     async function handleSimpleInsert(tableName, dataObj, formId, reloadFunc) {
         const { error } = await iamurelSupabase.from(tableName).insert([dataObj]);
         if (!error) { document.getElementById(formId).reset(); reloadFunc(); }
@@ -233,7 +227,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // CMS: Pacotes
     async function loadPackagesAdmin() {
         const { data } = await iamurelSupabase.from('iamurel_packages').select('*').order('sort_order');
         document.getElementById('packages-list').innerHTML = (data||[]).map(pkg => `
@@ -246,9 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <button data-id="${pkg.id}" class="btn-del-pkg text-red-500 text-sm font-bold text-left mt-auto pt-2 border-t">Excluir Pacote</button>
             </div>`).join('');
             
-        document.querySelectorAll('.btn-del-pkg').forEach(btn => {
-            btn.addEventListener('click', (e) => handleSimpleDelete('iamurel_packages', e.target.getAttribute('data-id'), loadPackagesAdmin));
-        });
+        document.querySelectorAll('.btn-del-pkg').forEach(btn => btn.addEventListener('click', (e) => handleSimpleDelete('iamurel_packages', e.target.getAttribute('data-id'), loadPackagesAdmin)));
     }
 
     document.getElementById('form-new-package').addEventListener('submit', (e) => {
@@ -262,22 +253,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 'form-new-package', loadPackagesAdmin);
     });
 
-    // CMS: Cases
     async function loadCasesAdmin() {
         const { data } = await iamurelSupabase.from('iamurel_cases').select('*').order('sort_order');
-        document.getElementById('cases-list').innerHTML = (data||[]).map(c => `
-            <div class="border p-4 bg-white rounded-lg flex justify-between items-center">
-                <div><p class="font-bold">${c.title}</p><p class="text-sm text-gray-500">${c.is_published ? 'Público' : 'Oculto'}</p></div>
-                <button data-id="${c.id}" class="btn-del-case text-red-500 text-sm font-bold">Apagar</button>
-            </div>`).join('');
+        document.getElementById('cases-list').innerHTML = (data||[]).map(c => `<div class="border p-4 bg-white rounded-lg flex justify-between items-center"><div><p class="font-bold">${c.title}</p><p class="text-sm text-gray-500">${c.is_published ? 'Público' : 'Oculto'}</p></div><button data-id="${c.id}" class="btn-del-case text-red-500 text-sm font-bold">Apagar</button></div>`).join('');
         document.querySelectorAll('.btn-del-case').forEach(btn => btn.addEventListener('click', (e) => handleSimpleDelete('iamurel_cases', e.target.getAttribute('data-id'), loadCasesAdmin)));
     }
     document.getElementById('form-new-case').addEventListener('submit', (e) => {
-        e.preventDefault();
-        handleSimpleInsert('iamurel_cases', { title: document.getElementById('case-title').value, description: document.getElementById('case-desc').value, image_url: document.getElementById('case-img').value, is_published: document.getElementById('case-published').checked }, 'form-new-case', loadCasesAdmin);
+        e.preventDefault(); handleSimpleInsert('iamurel_cases', { title: document.getElementById('case-title').value, description: document.getElementById('case-desc').value, image_url: document.getElementById('case-img').value, is_published: document.getElementById('case-published').checked }, 'form-new-case', loadCasesAdmin);
     });
 
-    // CMS: Reviews
     async function loadReviewsAdmin() {
         const { data } = await iamurelSupabase.from('iamurel_reviews').select('*').order('created_at');
         document.getElementById('reviews-list').innerHTML = (data||[]).map(r => `<div class="border p-4 bg-white rounded-lg flex justify-between items-center"><div><p class="font-bold">${r.client_name}</p></div><button data-id="${r.id}" class="btn-del-rev text-red-500 text-sm font-bold">Apagar</button></div>`).join('');
@@ -287,7 +271,6 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault(); handleSimpleInsert('iamurel_reviews', { client_name: document.getElementById('rev-name').value, review_text: document.getElementById('rev-text').value, is_published: document.getElementById('rev-published').checked }, 'form-new-review', loadReviewsAdmin);
     });
 
-    // CMS: FAQ
     async function loadFaqAdmin() {
         const { data } = await iamurelSupabase.from('iamurel_faqs').select('*').order('sort_order');
         document.getElementById('faq-list').innerHTML = (data||[]).map(f => `<div class="border p-4 bg-white rounded-lg flex justify-between items-center"><div><p class="font-bold">${f.question}</p></div><button data-id="${f.id}" class="btn-del-faq text-red-500 text-sm font-bold">Apagar</button></div>`).join('');
@@ -297,7 +280,6 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault(); handleSimpleInsert('iamurel_faqs', { question: document.getElementById('faq-question').value, answer: document.getElementById('faq-answer').value, is_published: document.getElementById('faq-published').checked }, 'form-new-faq', loadFaqAdmin);
     });
 
-    // --- CONFIGURAÇÕES DE APARÊNCIA E TEXTOS --- //
     async function loadSettingsAdmin() {
         const { data } = await iamurelSupabase.from('iamurel_site_settings').select('*').limit(1).maybeSingle();
         if (data) {
