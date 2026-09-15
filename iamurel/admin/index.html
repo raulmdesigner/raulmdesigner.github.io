@@ -8,17 +8,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        body { 
-            font-family: 'DM Sans', sans-serif; 
-            background-color: #F6EEDC; 
-            color: #242322; 
-        }
-        .admin-glass {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-        }
+        body { font-family: 'DM Sans', sans-serif; background-color: #F6EEDC; color: #242322; }
+        .admin-glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(0, 0, 0, 0.05); }
+        .nav-btn.active { background-color: #242322; color: #F6EEDC; font-weight: bold; }
+        .nav-btn { color: #4b5563; transition: all 0.2s; }
+        .nav-btn:hover:not(.active) { background-color: #e5e7eb; }
     </style>
 </head>
 <body>
@@ -28,62 +22,114 @@
         <div class="admin-glass p-10 rounded-2xl w-full max-w-md text-center">
             <h2 class="text-3xl font-bold mb-2">IAMUREL</h2>
             <p class="text-gray-500 mb-8">Acesso restrito à direção</p>
-            
             <form id="iamurel-login-form" class="space-y-4">
-                <input type="email" id="login-email" placeholder="E-mail administrativo" required class="w-full p-4 rounded-xl border border-gray-200 bg-white">
-                <input type="password" id="login-password" placeholder="Senha" required class="w-full p-4 rounded-xl border border-gray-200 bg-white">
-                <button type="submit" class="w-full bg-[#242322] text-[#F6EEDC] font-bold py-4 rounded-xl hover:bg-black transition">Entrar no Studio</button>
+                <input type="email" id="login-email" placeholder="E-mail" required class="w-full p-4 rounded-xl border">
+                <input type="password" id="login-password" placeholder="Senha" required class="w-full p-4 rounded-xl border">
+                <button type="submit" class="w-full bg-[#242322] text-[#F6EEDC] font-bold py-4 rounded-xl">Entrar no Studio</button>
             </form>
             <div id="login-error" class="text-red-500 mt-4 hidden"></div>
         </div>
     </div>
 
-    <!-- Tela do Dashboard (Oculta por padrão) -->
-    <div id="iamurel-dashboard-view" class="min-h-screen hidden">
-        <!-- Navegação Superior -->
-        <header class="bg-[#242322] text-[#F6EEDC] p-4 flex justify-between items-center shadow-md">
+    <!-- Tela do Dashboard -->
+    <div id="iamurel-dashboard-view" class="min-h-screen hidden flex flex-col">
+        <header class="bg-[#242322] text-[#F6EEDC] p-4 flex justify-between items-center z-10">
             <h1 class="text-xl font-bold">IAMUREL Studio</h1>
-            <div class="flex gap-4">
-                <button id="btn-logout" class="text-gray-400 hover:text-white transition">Sair do sistema</button>
-            </div>
+            <button id="btn-logout" class="text-gray-400 hover:text-white">Sair do sistema</button>
         </header>
 
-        <div class="flex">
+        <div class="flex flex-1 overflow-hidden">
             <!-- Menu Lateral -->
-            <aside class="w-64 min-h-[calc(100vh-60px)] admin-glass border-r p-6 hidden md:block">
+            <aside class="w-64 admin-glass border-r p-6 hidden md:block">
                 <nav class="space-y-2">
-                    <button class="w-full text-left px-4 py-3 bg-[#242322] text-[#F6EEDC] rounded-lg font-bold">Inbox (Leads)</button>
-                    <button class="w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg transition">Pacotes e Preços</button>
-                    <button class="w-full text-left px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg transition">Aparência do Site</button>
+                    <button id="btn-nav-inbox" class="nav-btn active w-full text-left px-4 py-3 rounded-lg">Inbox (Leads)</button>
+                    <button id="btn-nav-packages" class="nav-btn w-full text-left px-4 py-3 rounded-lg">Pacotes e Preços</button>
+                    <button id="btn-nav-appearance" class="nav-btn w-full text-left px-4 py-3 rounded-lg">Aparência do Site</button>
                 </nav>
             </aside>
 
-            <!-- Área de Conteúdo Principal (Leads) -->
-            <main class="flex-1 p-8">
-                <h2 class="text-3xl font-bold mb-6">Solicitações de Orçamento</h2>
+            <main class="flex-1 p-8 overflow-y-auto">
                 
-                <div class="admin-glass rounded-2xl overflow-hidden">
-                    <table class="w-full text-left">
-                        <thead class="bg-gray-50 border-b">
-                            <tr>
-                                <th class="p-4 font-bold text-gray-600">Cliente</th>
-                                <th class="p-4 font-bold text-gray-600">Negócio</th>
-                                <th class="p-4 font-bold text-gray-600">Data</th>
-                                <th class="p-4 font-bold text-gray-600">Ação</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leads-table-body" class="divide-y">
-                            <tr>
-                                <td colspan="4" class="p-8 text-center text-gray-500">Carregando contatos aguarde...</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- View: Inbox -->
+                <div id="view-inbox" class="content-view">
+                    <h2 class="text-3xl font-bold mb-6">Solicitações de Orçamento</h2>
+                    <div class="admin-glass rounded-2xl overflow-hidden">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-50 border-b">
+                                <tr>
+                                    <th class="p-4 font-bold text-gray-600">Cliente</th>
+                                    <th class="p-4 font-bold text-gray-600">Negócio</th>
+                                    <th class="p-4 font-bold text-gray-600">Data</th>
+                                    <th class="p-4 font-bold text-gray-600">Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leads-table-body" class="divide-y">
+                                <tr><td colspan="4" class="p-8 text-center text-gray-500">Carregando contatos aguarde...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
+                <!-- View: Pacotes -->
+                <div id="view-packages" class="content-view hidden">
+                    <h2 class="text-3xl font-bold mb-6">Gerenciar Pacotes</h2>
+                    
+                    <!-- Formulário de Novo Pacote -->
+                    <div class="admin-glass p-6 rounded-2xl mb-8">
+                        <h3 class="text-xl font-bold mb-4">Adicionar Novo Plano</h3>
+                        <form id="form-new-package" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="pkg-name" placeholder="Nome do pacote (ex: Essencial)" required class="w-full p-3 border rounded-lg">
+                                <input type="text" id="pkg-price" placeholder="Preço (ex: R$ 1.500)" required class="w-full p-3 border rounded-lg">
+                            </div>
+                            <textarea id="pkg-desc" placeholder="Descrição e benefícios" required class="w-full p-3 border rounded-lg" rows="2"></textarea>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" id="pkg-published" checked class="w-5 h-5 rounded">
+                                <span class="font-medium text-gray-700">Tornar público imediatamente no site</span>
+                            </label>
+                            <button type="submit" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-lg">Salvar Pacote</button>
+                        </form>
+                        <div id="pkg-msg" class="mt-2 text-sm font-bold"></div>
+                    </div>
+
+                    <!-- Lista de Pacotes -->
+                    <h3 class="text-xl font-bold mb-4">Planos Existentes</h3>
+                    <div id="packages-list" class="grid md:grid-cols-2 gap-4"></div>
+                </div>
+
+                <!-- View: Aparência -->
+                <div id="view-appearance" class="content-view hidden">
+                    <h2 class="text-3xl font-bold mb-6">Aparência do Site</h2>
+                    <div class="admin-glass p-6 rounded-2xl">
+                        <form id="form-appearance" class="space-y-6">
+                            <div>
+                                <label class="block font-bold mb-2">Título Principal (Hero)</label>
+                                <input type="text" id="app-hero-title" class="w-full p-3 border rounded-lg" placeholder="Conteúdo com direção.">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-2">Subtítulo (Hero)</label>
+                                <textarea id="app-hero-subtitle" class="w-full p-3 border rounded-lg" rows="2"></textarea>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block font-bold mb-2">Cor Principal (Hexadecimal)</label>
+                                    <input type="text" id="app-primary-color" class="w-full p-3 border rounded-lg" placeholder="#3b82f6">
+                                </div>
+                                <div>
+                                    <label class="block font-bold mb-2">URL da Logo (Opcional)</label>
+                                    <input type="text" id="app-logo-url" class="w-full p-3 border rounded-lg" placeholder="https://...">
+                                </div>
+                            </div>
+                            <button type="submit" class="bg-[#242322] text-[#F6EEDC] font-bold py-3 px-6 rounded-lg">Salvar Configurações</button>
+                            <div id="app-msg" class="mt-2 text-sm font-bold"></div>
+                        </form>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>
 
-    <!-- Importante notar que o caminho dos scripts sobe uma pasta (../) para acessar os assets -->
     <script src="../assets/supabase-config.js"></script>
     <script src="../assets/iamurel-admin.js"></script>
 </body>
