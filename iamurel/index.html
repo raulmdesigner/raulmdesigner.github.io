@@ -3,18 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IAMUREL | Agência AI-First</title>
+    <title>IAMUREL | Agência AI-First em Tubarão e Região da Amurel</title>
+    <meta name="description" content="Aceleramos a sua comunicação visual com Inteligência Artificial e Direção Criativa. Projetos de identidade, design e conteúdo em Tubarão, SC.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         html { scroll-behavior: smooth; }
-        body { 
-            font-family: 'DM Sans', sans-serif; 
-            background-color: #242322; 
-            color: #F6EEDC; 
-            overflow-x: hidden;
-        }
+        body { font-family: 'DM Sans', sans-serif; background-color: #242322; color: #F6EEDC; overflow-x: hidden; }
         
         .glass-panel {
             background: rgba(255, 255, 255, 0.03);
@@ -25,35 +21,29 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
         }
 
-        .glass-input {
+        .glass-input, .glass-select {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #F6EEDC;
             border-radius: 12px;
             transition: all 0.3s ease;
         }
-        .glass-input:focus {
+        .glass-input:focus, .glass-select:focus {
             outline: none;
             border-color: #F6EEDC;
             background: rgba(255, 255, 255, 0.05);
         }
+        .glass-select option { background-color: #242322; color: #F6EEDC; }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-up {
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
         }
 
-        .ambient-light {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            z-index: -1;
-            opacity: 0.15;
-            pointer-events: none;
-        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-up { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .ambient-light { position: absolute; border-radius: 50%; filter: blur(100px); z-index: -1; opacity: 0.15; pointer-events: none; }
     </style>
 </head>
 <body id="iamurel-body" class="relative">
@@ -63,15 +53,14 @@
 
     <header class="fixed w-full top-0 z-50 glass-panel !border-x-0 !border-t-0 !rounded-none !backdrop-blur-md bg-opacity-70">
         <div class="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
-            
             <div id="iamurel-logo-container" class="flex items-center">
                 <h1 class="text-2xl font-bold tracking-tight text-[#F6EEDC]">IAMUREL</h1>
             </div>
-
             <nav class="hidden md:flex gap-8">
-                <a href="#metodo" class="text-gray-400 hover:text-[#F6EEDC] transition">O Método</a>
                 <a href="#solucoes" class="text-gray-400 hover:text-[#F6EEDC] transition">Soluções</a>
+                <a href="#portfolio" class="text-gray-400 hover:text-[#F6EEDC] transition">Cases</a>
                 <a href="#pacotes" class="text-gray-400 hover:text-[#F6EEDC] transition">Pacotes</a>
+                <a href="#faq" class="text-gray-400 hover:text-[#F6EEDC] transition">FAQ</a>
             </nav>
             <a href="#contato" class="bg-[#F6EEDC] text-[#242322] px-6 py-2.5 rounded-full font-bold hover:bg-white transition shadow-lg">Iniciar Projeto</a>
         </div>
@@ -84,9 +73,19 @@
                 Design com <span class="italic text-transparent bg-clip-text bg-gradient-to-r from-[#F6EEDC] to-gray-500">intenção.</span>
             </h2>
             <p id="iamurel-hero-subtitle" class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-                IA acelera a exploração e produção. A direção criativa humana garante contexto, coerência e acabamento.
+                Aceleração criativa com IA para marcas em Tubarão e todo o Brasil. A direção humana garante contexto, coerência e acabamento.
             </p>
-            <a href="#contato" class="glass-panel text-[#F6EEDC] px-10 py-4 rounded-full font-bold text-lg inline-block hover:bg-white/5 transition">Ver como funciona</a>
+            <a href="#contato" class="glass-panel text-[#F6EEDC] px-10 py-4 rounded-full font-bold text-lg inline-block hover:bg-white/5 transition">Quero transformar minha marca</a>
+        </section>
+
+        <!-- Contato Direto Externo -->
+        <section id="canais-rapidos" class="py-10 px-6">
+            <div class="max-w-4xl mx-auto flex flex-wrap justify-center gap-4 border-y border-white/10 py-8">
+                <p class="w-full text-center text-gray-400 mb-4 font-bold">Canais de Atendimento Rápido</p>
+                <a href="#" class="link-whatsapp hidden items-center gap-2 glass-panel px-6 py-3 hover:bg-white/10 transition font-bold text-green-400">WhatsApp</a>
+                <a href="#" class="link-instagram hidden items-center gap-2 glass-panel px-6 py-3 hover:bg-white/10 transition font-bold text-pink-400">Instagram</a>
+                <a href="#" class="link-email hidden items-center gap-2 glass-panel px-6 py-3 hover:bg-white/10 transition font-bold text-blue-400">E-mail</a>
+            </div>
         </section>
 
         <section id="solucoes" class="py-24 px-6 relative">
@@ -97,59 +96,98 @@
                 </div>
                 <div class="grid md:grid-cols-3 gap-6">
                     <div class="glass-panel p-8">
-                        <h4 class="text-xl font-bold mb-3">Identidade Visual</h4>
-                        <p class="text-gray-400 text-sm">Logo, variações, paleta, tipografia e guia de uso.</p>
+                        <h4 class="text-xl font-bold mb-3">Método DirecionIA</h4>
+                        <p class="text-gray-400 text-sm">Estratégia, logo, variações, paleta, tipografia e guia de uso inteligente.</p>
                     </div>
                     <div class="glass-panel p-8">
-                        <h4 class="text-xl font-bold mb-3">Conteúdo para Redes</h4>
-                        <p class="text-gray-400 text-sm">Posts, carrosséis e roteiros assistidos por IA.</p>
+                        <h4 class="text-xl font-bold mb-3">Método EntreguIA</h4>
+                        <p class="text-gray-400 text-sm">Volume e escala. Posts, carrosséis e roteiros assistidos e revisados.</p>
                     </div>
                     <div class="glass-panel p-8">
                         <h4 class="text-xl font-bold mb-3">Design sob demanda</h4>
-                        <p class="text-gray-400 text-sm">Apresentações, materiais comerciais e peças digitais.</p>
+                        <p class="text-gray-400 text-sm">Apresentações comerciais, campanhas e materiais de alta conversão.</p>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Seção Dinâmica: Mini Portfólio -->
+        <section id="portfolio" class="py-24 px-6 bg-black/20 hidden">
+            <div class="max-w-6xl mx-auto">
+                <div class="mb-16 text-center">
+                    <h3 class="text-3xl font-bold mb-4">Últimos Projetos</h3>
+                    <p class="text-gray-400">Direção criativa aplicada na prática.</p>
+                </div>
+                <div id="iamurel-cases-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </div>
+        </section>
+
+        <!-- Seção Dinâmica: Avaliações -->
+        <section id="avaliacoes" class="py-24 px-6 hidden">
+            <div class="max-w-6xl mx-auto">
+                <div class="mb-16 text-center">
+                    <h3 class="text-3xl font-bold mb-4">O que dizem sobre nós</h3>
+                </div>
+                <div id="iamurel-reviews-container" class="grid md:grid-cols-2 gap-8"></div>
             </div>
         </section>
 
         <section id="pacotes" class="py-24 px-6 bg-black/20">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-16">
-                    <h3 class="text-3xl font-bold mb-4">Planos Iniciais</h3>
-                    <p class="text-gray-400">Qual caminho se encaixa no seu momento?</p>
+                    <h3 class="text-3xl font-bold mb-4">Planos de Aceleração</h3>
+                    <p class="text-gray-400">Transparência e previsibilidade para o seu caixa.</p>
                 </div>
                 <div id="iamurel-packages-container" class="grid md:grid-cols-3 gap-8">
-                    <p class="text-center col-span-full text-gray-500">Conectando ao banco de dados...</p>
+                    <p class="text-center col-span-full text-gray-500">Conectando inteligência...</p>
                 </div>
             </div>
         </section>
 
-        <section id="contato" class="py-24 px-6 relative">
+        <!-- Seção Dinâmica: FAQ -->
+        <section id="faq" class="py-24 px-6 hidden">
+            <div class="max-w-3xl mx-auto">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold mb-4">Perguntas Frequentes</h3>
+                    <p class="text-gray-400">Tudo o que você precisa saber sobre nosso processo AI-First.</p>
+                </div>
+                <div id="iamurel-faq-container" class="space-y-4"></div>
+            </div>
+        </section>
+
+        <section id="contato" class="py-24 px-6 relative border-t border-white/5">
             <div class="max-w-3xl mx-auto glass-panel p-10 md:p-14">
-                <h3 class="text-3xl font-bold mb-8 text-center">Falar sobre um projeto</h3>
+                <h3 class="text-3xl font-bold mb-8 text-center">Diagnóstico do Projeto</h3>
                 <form id="iamurel-lead-form" class="space-y-6">
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-bold text-gray-400 mb-3">Qual é a sua necessidade principal agora?</label>
+                        <select id="iamurel-diagnostico" class="glass-select w-full p-4" required>
+                            <option value="">Selecione uma opção...</option>
+                            <option value="Criar Identidade Visual do zero">Criar Identidade Visual do zero</option>
+                            <option value="Aumentar o volume de conteúdo (Redes)">Aumentar o volume de conteúdo (Redes)</option>
+                            <option value="Design pontual (Apresentações, Peças)">Design pontual (Apresentações, Peças)</option>
+                            <option value="Ainda não sei, preciso de ajuda">Ainda não sei, preciso de ajuda</option>
+                        </select>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <input type="text" id="iamurel-nome" placeholder="Nome completo" required class="glass-input w-full p-4">
                         <input type="text" id="iamurel-telefone" placeholder="WhatsApp" required class="glass-input w-full p-4">
                     </div>
                     <input type="email" id="iamurel-email" placeholder="E-mail profissional" required class="glass-input w-full p-4">
                     <input type="text" id="iamurel-negocio" placeholder="Qual é o seu negócio?" required class="glass-input w-full p-4">
-                    <textarea id="iamurel-mensagem" placeholder="Descreva brevemente o que você precisa..." rows="4" required class="glass-input w-full p-4"></textarea>
-                    <button type="submit" class="w-full bg-[#F6EEDC] text-[#242322] font-bold py-4 rounded-xl hover:bg-white transition">Solicitar Orçamento</button>
+                    <textarea id="iamurel-mensagem" placeholder="Detalhe um pouco mais sobre o seu momento atual..." rows="4" required class="glass-input w-full p-4"></textarea>
+                    
+                    <button type="submit" class="w-full bg-[#F6EEDC] text-[#242322] font-bold py-4 rounded-xl hover:bg-white transition text-lg">Solicitar Proposta</button>
                 </form>
                 <div id="iamurel-form-message" class="text-center mt-6"></div>
-
-                <div id="iamurel-contact-links" class="flex justify-center gap-6 mt-10 pt-6 border-t border-white/10">
-                    <a href="#" class="link-whatsapp text-gray-400 hover:text-[#F6EEDC] transition hidden font-bold">WhatsApp</a>
-                    <a href="#" class="link-email text-gray-400 hover:text-[#F6EEDC] transition hidden font-bold">E-mail</a>
-                    <a href="#" class="link-instagram text-gray-400 hover:text-[#F6EEDC] transition hidden font-bold">Instagram</a>
-                </div>
             </div>
         </section>
     </main>
 
     <footer class="border-t border-white/10 py-8 text-center text-gray-500 text-sm">
-        <p>&copy; 2026 IAMUREL. Todos os direitos reservados.</p>
+        <p>&copy; 2026 IAMUREL. DirecionIA e EntreguIA são métodos proprietários. Tubarão, Santa Catarina.</p>
     </footer>
 
     <script src="./assets/supabase-config.js"></script>
