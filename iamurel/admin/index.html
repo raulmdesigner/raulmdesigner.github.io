@@ -17,29 +17,26 @@
 </head>
 <body>
 
-    <!-- Tela de Login -->
     <div id="iamurel-login-view" class="min-h-screen flex items-center justify-center p-4">
-        <div class="admin-glass p-10 rounded-2xl w-full max-w-md text-center">
+        <div class="admin-glass p-10 rounded-2xl w-full max-w-md text-center shadow-lg">
             <h2 class="text-3xl font-bold mb-2">IAMUREL</h2>
             <p class="text-gray-500 mb-8">Acesso restrito à direção</p>
             <form id="iamurel-login-form" class="space-y-4">
-                <input type="email" id="login-email" placeholder="E-mail" required class="w-full p-4 rounded-xl border">
-                <input type="password" id="login-password" placeholder="Senha" required class="w-full p-4 rounded-xl border">
-                <button type="submit" class="w-full bg-[#242322] text-[#F6EEDC] font-bold py-4 rounded-xl">Entrar no Studio</button>
+                <input type="email" id="login-email" placeholder="E-mail" required class="w-full p-4 rounded-xl border bg-white">
+                <input type="password" id="login-password" placeholder="Senha" required class="w-full p-4 rounded-xl border bg-white">
+                <button type="submit" class="w-full bg-[#242322] text-[#F6EEDC] font-bold py-4 rounded-xl transition hover:bg-black">Entrar no Studio</button>
             </form>
-            <div id="login-error" class="text-red-500 mt-4 hidden"></div>
+            <div id="login-error" class="text-red-500 mt-4 hidden font-bold"></div>
         </div>
     </div>
 
-    <!-- Tela do Dashboard -->
     <div id="iamurel-dashboard-view" class="min-h-screen hidden flex flex-col">
-        <header class="bg-[#242322] text-[#F6EEDC] p-4 flex justify-between items-center z-10">
+        <header class="bg-[#242322] text-[#F6EEDC] p-4 flex justify-between items-center z-10 shadow">
             <h1 class="text-xl font-bold">IAMUREL Studio</h1>
-            <button id="btn-logout" class="text-gray-400 hover:text-white">Sair do sistema</button>
+            <button id="btn-logout" class="text-gray-400 hover:text-white transition">Sair do sistema</button>
         </header>
 
         <div class="flex flex-1 overflow-hidden">
-            <!-- Menu Lateral -->
             <aside class="w-64 admin-glass border-r p-6 hidden md:block">
                 <nav class="space-y-2">
                     <button id="btn-nav-inbox" class="nav-btn active w-full text-left px-4 py-3 rounded-lg">Inbox (Leads)</button>
@@ -50,10 +47,9 @@
 
             <main class="flex-1 p-8 overflow-y-auto">
                 
-                <!-- View: Inbox -->
                 <div id="view-inbox" class="content-view">
                     <h2 class="text-3xl font-bold mb-6">Solicitações de Orçamento</h2>
-                    <div class="admin-glass rounded-2xl overflow-hidden">
+                    <div class="admin-glass rounded-2xl overflow-hidden shadow-sm">
                         <table class="w-full text-left">
                             <thead class="bg-gray-50 border-b">
                                 <tr>
@@ -63,92 +59,87 @@
                                     <th class="p-4 font-bold text-gray-600">Ação</th>
                                 </tr>
                             </thead>
-                            <tbody id="leads-table-body" class="divide-y">
+                            <tbody id="leads-table-body" class="divide-y bg-white">
                                 <tr><td colspan="4" class="p-8 text-center text-gray-500">Carregando contatos aguarde...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- View: Pacotes -->
                 <div id="view-packages" class="content-view hidden">
                     <h2 class="text-3xl font-bold mb-6">Gerenciar Pacotes</h2>
                     
-                    <!-- Formulário de Novo Pacote -->
-                    <div class="admin-glass p-6 rounded-2xl mb-8">
+                    <div class="admin-glass p-6 rounded-2xl mb-8 shadow-sm">
                         <h3 class="text-xl font-bold mb-4">Adicionar Novo Plano</h3>
                         <form id="form-new-package" class="space-y-4">
                             <div class="grid grid-cols-2 gap-4">
-                                <input type="text" id="pkg-name" placeholder="Nome do pacote (ex: Essencial)" required class="w-full p-3 border rounded-lg">
-                                <input type="text" id="pkg-price" placeholder="Preço (ex: R$ 1.500)" required class="w-full p-3 border rounded-lg">
+                                <input type="text" id="pkg-name" placeholder="Nome do pacote (ex: Essencial)" required class="w-full p-3 border rounded-lg bg-white">
+                                <input type="text" id="pkg-price" placeholder="Preço (ex: R$ 1.500)" required class="w-full p-3 border rounded-lg bg-white">
                             </div>
-                            <textarea id="pkg-desc" placeholder="Descrição e benefícios" required class="w-full p-3 border rounded-lg" rows="2"></textarea>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" id="pkg-published" checked class="w-5 h-5 rounded">
+                            <textarea id="pkg-desc" placeholder="Descrição e benefícios" required class="w-full p-3 border rounded-lg bg-white" rows="2"></textarea>
+                            <label class="flex items-center gap-2 cursor-pointer mt-2">
+                                <input type="checkbox" id="pkg-published" checked class="w-5 h-5 rounded border-gray-300">
                                 <span class="font-medium text-gray-700">Tornar público imediatamente no site</span>
                             </label>
-                            <button type="submit" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-lg">Salvar Pacote</button>
+                            <button type="submit" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition">Salvar Pacote</button>
                         </form>
                         <div id="pkg-msg" class="mt-2 text-sm font-bold"></div>
                     </div>
 
-                    <!-- Lista de Pacotes -->
                     <h3 class="text-xl font-bold mb-4">Planos Existentes</h3>
                     <div id="packages-list" class="grid md:grid-cols-2 gap-4"></div>
                 </div>
 
-                <!-- View: Aparência -->
-                <!-- View: Aparência e Contatos -->
-<div id="view-appearance" class="content-view hidden">
-    <h2 class="text-3xl font-bold mb-6">Aparência e Contatos</h2>
-    <div class="admin-glass p-6 rounded-2xl">
-        <form id="form-appearance" class="space-y-6">
-            
-            <h3 class="text-xl font-bold border-b pb-2">Identidade Visual</h3>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block font-bold mb-2 text-sm">URL da Logo (Cole o link da imagem)</label>
-                    <input type="text" id="app-logo-url" class="w-full p-3 border rounded-lg bg-white" placeholder="https://seudominio.com/logo.png">
-                </div>
-                <div>
-                    <label class="block font-bold mb-2 text-sm">Cor Principal (Botões e Destaques)</label>
-                    <input type="color" id="app-primary-color" class="w-full h-[50px] p-1 border rounded-lg bg-white cursor-pointer">
-                </div>
-            </div>
+                <div id="view-appearance" class="content-view hidden">
+                    <h2 class="text-3xl font-bold mb-6">Aparência e Contatos</h2>
+                    <div class="admin-glass p-6 rounded-2xl shadow-sm">
+                        <form id="form-appearance" class="space-y-6">
+                            
+                            <h3 class="text-xl font-bold border-b border-gray-200 pb-2">Identidade Visual</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block font-bold mb-2 text-sm text-gray-700">URL da Logo (Cole o link da imagem)</label>
+                                    <input type="text" id="app-logo-url" class="w-full p-3 border rounded-lg bg-white" placeholder="https://seudominio.com/logo.png">
+                                </div>
+                                <div>
+                                    <label class="block font-bold mb-2 text-sm text-gray-700">Cor Principal (Botões e Destaques)</label>
+                                    <input type="color" id="app-primary-color" class="w-full h-[50px] p-1 border rounded-lg bg-white cursor-pointer">
+                                </div>
+                            </div>
 
-            <h3 class="text-xl font-bold border-b pb-2 mt-8">Redes e Contato</h3>
-            <div class="grid grid-cols-3 gap-4">
-                <div>
-                    <label class="block font-bold mb-2 text-sm">WhatsApp (Apenas números)</label>
-                    <input type="text" id="app-whatsapp" class="w-full p-3 border rounded-lg bg-white" placeholder="5548999999999">
-                </div>
-                <div>
-                    <label class="block font-bold mb-2 text-sm">Email Comercial</label>
-                    <input type="email" id="app-email" class="w-full p-3 border rounded-lg bg-white" placeholder="contato@iamurel.com">
-                </div>
-                <div>
-                    <label class="block font-bold mb-2 text-sm">Instagram (URL)</label>
-                    <input type="text" id="app-instagram" class="w-full p-3 border rounded-lg bg-white" placeholder="https://instagram.com/iamurel">
-                </div>
-            </div>
+                            <h3 class="text-xl font-bold border-b border-gray-200 pb-2 mt-8">Redes e Contato</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block font-bold mb-2 text-sm text-gray-700">WhatsApp (Apenas números)</label>
+                                    <input type="text" id="app-whatsapp" class="w-full p-3 border rounded-lg bg-white" placeholder="5548999999999">
+                                </div>
+                                <div>
+                                    <label class="block font-bold mb-2 text-sm text-gray-700">Email Comercial</label>
+                                    <input type="email" id="app-email" class="w-full p-3 border rounded-lg bg-white" placeholder="contato@iamurel.com">
+                                </div>
+                                <div>
+                                    <label class="block font-bold mb-2 text-sm text-gray-700">Instagram (URL)</label>
+                                    <input type="text" id="app-instagram" class="w-full p-3 border rounded-lg bg-white" placeholder="https://instagram.com/iamurel">
+                                </div>
+                            </div>
 
-            <h3 class="text-xl font-bold border-b pb-2 mt-8">Textos Principais</h3>
-            <div>
-                <label class="block font-bold mb-2 text-sm">Título Principal (Hero)</label>
-                <input type="text" id="app-hero-title" class="w-full p-3 border rounded-lg bg-white">
-            </div>
-            <div>
-                <label class="block font-bold mb-2 text-sm">Subtítulo (Hero)</label>
-                <textarea id="app-hero-subtitle" class="w-full p-3 border rounded-lg bg-white" rows="2"></textarea>
-            </div>
+                            <h3 class="text-xl font-bold border-b border-gray-200 pb-2 mt-8">Textos Principais</h3>
+                            <div>
+                                <label class="block font-bold mb-2 text-sm text-gray-700">Título Principal (Hero)</label>
+                                <input type="text" id="app-hero-title" class="w-full p-3 border rounded-lg bg-white">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-2 text-sm text-gray-700">Subtítulo (Hero)</label>
+                                <textarea id="app-hero-subtitle" class="w-full p-3 border rounded-lg bg-white" rows="2"></textarea>
+                            </div>
 
-            <button type="submit" class="bg-[#242322] text-[#F6EEDC] font-bold py-4 px-8 rounded-xl w-full md:w-auto hover:bg-black transition mt-6">
-                Salvar Configurações
-            </button>
-            <div id="app-msg" class="mt-4 text-sm font-bold text-center"></div>
-        </form>
-    </div>
-</div>
+                            <button type="submit" class="bg-[#242322] text-[#F6EEDC] font-bold py-4 px-8 rounded-xl w-full md:w-auto hover:bg-black transition mt-6">
+                                Salvar Configurações
+                            </button>
+                            <div id="app-msg" class="mt-4 text-sm font-bold text-center"></div>
+                        </form>
+                    </div>
+                </div>
 
             </main>
         </div>
