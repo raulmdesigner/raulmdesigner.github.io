@@ -11,12 +11,11 @@
         html { scroll-behavior: smooth; }
         body { 
             font-family: 'DM Sans', sans-serif; 
-            background-color: #242322; /* Preto suave minimalista */
-            color: #F6EEDC; /* Creme claro para contraste elegante */
+            background-color: #242322; 
+            color: #F6EEDC; 
             overflow-x: hidden;
         }
         
-        /* Efeito Liquid Glass Otimizado */
         .glass-panel {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(24px);
@@ -39,7 +38,6 @@
             background: rgba(255, 255, 255, 0.05);
         }
 
-        /* Animações de entrada suaves */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -48,7 +46,6 @@
             animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Blobs decorativos sutis ao fundo */
         .ambient-light {
             position: absolute;
             border-radius: 50%;
@@ -61,13 +58,16 @@
 </head>
 <body id="iamurel-body" class="relative">
 
-    <!-- Luzes de fundo -->
     <div class="ambient-light bg-blue-500 w-[500px] h-[500px] top-[-100px] left-[-100px]"></div>
     <div class="ambient-light bg-orange-500 w-[400px] h-[400px] top-[40%] right-[-100px]"></div>
 
     <header class="fixed w-full top-0 z-50 glass-panel !border-x-0 !border-t-0 !rounded-none !backdrop-blur-md bg-opacity-70">
         <div class="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
-            <h1 id="iamurel-logo-text" class="text-2xl font-bold tracking-tight text-[#F6EEDC]">IAMUREL</h1>
+            
+            <div id="iamurel-logo-container" class="flex items-center">
+                <h1 class="text-2xl font-bold tracking-tight text-[#F6EEDC]">IAMUREL</h1>
+            </div>
+
             <nav class="hidden md:flex gap-8">
                 <a href="#metodo" class="text-gray-400 hover:text-[#F6EEDC] transition">O Método</a>
                 <a href="#solucoes" class="text-gray-400 hover:text-[#F6EEDC] transition">Soluções</a>
@@ -78,19 +78,17 @@
     </header>
 
     <main class="pt-32">
-        <!-- Hero Section -->
         <section class="py-24 px-6 text-center max-w-5xl mx-auto animate-fade-up">
-            <h2 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-[1.1]">
+            <h2 id="iamurel-hero-title" class="text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-[1.1]">
                 Conteúdo com <span class="opacity-70">direção.</span><br>
                 Design com <span class="italic text-transparent bg-clip-text bg-gradient-to-r from-[#F6EEDC] to-gray-500">intenção.</span>
             </h2>
-            <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+            <p id="iamurel-hero-subtitle" class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
                 IA acelera a exploração e produção. A direção criativa humana garante contexto, coerência e acabamento.
             </p>
             <a href="#contato" class="glass-panel text-[#F6EEDC] px-10 py-4 rounded-full font-bold text-lg inline-block hover:bg-white/5 transition">Ver como funciona</a>
         </section>
 
-        <!-- Soluções (Estrutura iAgência) -->
         <section id="solucoes" class="py-24 px-6 relative">
             <div class="max-w-6xl mx-auto">
                 <div class="mb-16">
@@ -114,21 +112,18 @@
             </div>
         </section>
 
-        <!-- Pacotes Dinâmicos -->
         <section id="pacotes" class="py-24 px-6 bg-black/20">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-16">
                     <h3 class="text-3xl font-bold mb-4">Planos Iniciais</h3>
                     <p class="text-gray-400">Qual caminho se encaixa no seu momento?</p>
                 </div>
-                <!-- Container alimentado pelo JS -->
                 <div id="iamurel-packages-container" class="grid md:grid-cols-3 gap-8">
                     <p class="text-center col-span-full text-gray-500">Conectando ao banco de dados...</p>
                 </div>
             </div>
         </section>
 
-        <!-- Formulário de Conversão -->
         <section id="contato" class="py-24 px-6 relative">
             <div class="max-w-3xl mx-auto glass-panel p-10 md:p-14">
                 <h3 class="text-3xl font-bold mb-8 text-center">Falar sobre um projeto</h3>
@@ -143,6 +138,12 @@
                     <button type="submit" class="w-full bg-[#F6EEDC] text-[#242322] font-bold py-4 rounded-xl hover:bg-white transition">Solicitar Orçamento</button>
                 </form>
                 <div id="iamurel-form-message" class="text-center mt-6"></div>
+
+                <div id="iamurel-contact-links" class="flex justify-center gap-6 mt-10 pt-6 border-t border-white/10">
+                    <a href="#" class="link-whatsapp text-gray-400 hover:text-[#F6EEDC] transition hidden font-bold">WhatsApp</a>
+                    <a href="#" class="link-email text-gray-400 hover:text-[#F6EEDC] transition hidden font-bold">E-mail</a>
+                    <a href="#" class="link-instagram text-gray-400 hover:text-[#F6EEDC] transition hidden font-bold">Instagram</a>
+                </div>
             </div>
         </section>
     </main>
