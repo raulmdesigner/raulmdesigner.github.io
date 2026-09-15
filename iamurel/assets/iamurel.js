@@ -5,11 +5,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function loadSettings() {
         try {
+            // maybeSingle() evita que o site quebre se a tabela estiver vazia
             const { data: settings, error } = await iamurelSupabase
                 .from('iamurel_site_settings')
                 .select('*')
                 .limit(1)
-                .single();
+                .maybeSingle();
 
             if (settings) {
                 const logoContainer = document.getElementById('iamurel-logo-container');
@@ -61,7 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 .eq('is_published', true)
                 .order('sort_order', { ascending: true });
 
-            if (error) throw error;
+            if (error) {
+                console.error("Erro de permissão no Supabase:", error);
+                throw error;
+            }
 
             if (!packages || packages.length === 0) {
                 packagesContainer.innerHTML = '<p class="text-center col-span-full text-gray-500">Nenhum pacote disponível.</p>';
@@ -77,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `).join('');
         } catch (error) {
-            packagesContainer.innerHTML = '<p class="text-red-400 text-center col-span-full">Erro de conexão.</p>';
+            packagesContainer.innerHTML = '<p class="text-red-400 text-center col-span-full">Verifique a aba Console (F12) para detalhes do erro.</p>';
         }
     }
 
@@ -99,7 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const { error } = await iamurelSupabase.from('iamurel_leads').insert([newLead]);
 
             if (error) {
-                formMessage.innerHTML = '<p class="text-red-400 mt-4">Falha ao conectar. Tente novamente.</p>';
+                formMessage.innerHTML = '<p class="text-red-400 mt-4">Falha de comunicação com o banco de dados.</p>';
+                console.error("Erro no formulário:", error);
             } else {
                 formMessage.innerHTML = '<p class="text-emerald-400 mt-4 font-bold">Mensagem enviada com sucesso! Entraremos em contato.</p>';
                 leadForm.reset();
@@ -109,6 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Chama as duas funções independentemente
     loadSettings();
     loadPackages();
 });
