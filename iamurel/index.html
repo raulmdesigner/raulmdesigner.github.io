@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAMUREL | Agência AI-First</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #F6EEDC; color: #242322; }
+    </style>
+</head>
+<body id="iamurel-body">
+
+    <header class="bg-slate-900 text-white fixed w-full top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-tighter">IAMUREL</h1>
+            <nav class="hidden md:flex gap-6">
+                <a href="#iamurel-metodo" class="hover:text-blue-400">O Método</a>
+                <a href="#iamurel-pacotes" class="hover:text-blue-400">Pacotes</a>
+            </nav>
+            <a href="#iamurel-contato" class="bg-white text-slate-900 px-5 py-2 rounded-full font-medium">Começar um projeto</a>
+        </div>
+    </header>
+
+    <main class="pt-24">
+        <section class="py-20 px-4 text-center max-w-4xl mx-auto">
+            <h2 class="text-5xl md:text-6xl font-extrabold mb-6 text-slate-900">Conteúdo com direção. Design com intenção.</h2>
+            <p class="text-xl text-gray-700 mb-10">Combinamos inteligência artificial, direção criativa e design gráfico para transformar ideias soltas em uma presença de marca clara e consistente.</p>
+            <a href="#iamurel-contato" class="bg-blue-600 text-white px-8 py-4 rounded-full font-bold text-lg inline-block">Falar sobre meu projeto</a>
+        </section>
+
+        <section id="iamurel-pacotes" class="py-20 px-4">
+            <div class="max-w-6xl mx-auto">
+                <h3 class="text-3xl font-bold text-center mb-12">Planos de Aceleração</h3>
+                <div id="iamurel-packages-container" class="grid md:grid-cols-3 gap-8">
+                    <p class="text-center col-span-full">Carregando pacotes...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="iamurel-contato" class="py-20 px-4 bg-white">
+            <div class="max-w-3xl mx-auto">
+                <h3 class="text-3xl font-bold mb-8 text-center">Falar sobre um projeto</h3>
+                <form id="iamurel-lead-form" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" id="iamurel-nome" placeholder="Seu Nome" required class="w-full border p-3 rounded">
+                        <input type="text" id="iamurel-telefone" placeholder="Telefone / WhatsApp" required class="w-full border p-3 rounded">
+                    </div>
+                    <input type="email" id="iamurel-email" placeholder="Seu E-mail" required class="w-full border p-3 rounded">
+                    <input type="text" id="iamurel-negocio" placeholder="Qual é o seu negócio ou projeto?" required class="w-full border p-3 rounded">
+                    <textarea id="iamurel-mensagem" placeholder="Como podemos ajudar?" rows="4" required class="w-full border p-3 rounded"></textarea>
+                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded hover:bg-blue-700">Enviar Pedido</button>
+                </form>
+                <div id="iamurel-form-message" class="text-center"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="./assets/supabase-config.js"></script>
+    <script src="./assets/iamurel.js"></script>
+</body>
+</html>
