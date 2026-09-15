@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
     
-    // Função utilitária para abrir/fechar as perguntas do FAQ
     window.toggleFaq = function(id) {
         const answer = document.getElementById(`faq-answer-${id}`);
         if (answer.style.maxHeight) {
@@ -10,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Lógica para revelar o campo "Outro" no formulário de diagnóstico
     const selectNecessidade = document.getElementById('iamurel-necessidade');
     const inputNecessidadeOutro = document.getElementById('iamurel-necessidade-outro');
     
@@ -26,7 +24,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Carregar configurações de aparência e textos
+    // CORREÇÃO: Função para ser chamada quando clicar em um pacote
+    window.selectPackage = function(packageName) {
+        if (selectNecessidade && inputNecessidadeOutro) {
+            selectNecessidade.value = 'Outro';
+            inputNecessidadeOutro.classList.remove('hidden');
+            inputNecessidadeOutro.required = true;
+            inputNecessidadeOutro.value = `Interesse no plano: ${packageName}`;
+        }
+    };
+
     async function loadSettings() {
         try {
             const { data: settings } = await iamurelSupabase.from('iamurel_site_settings').select('*').limit(1).maybeSingle();
@@ -34,15 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (settings.logo_url) document.getElementById('iamurel-logo-container').innerHTML = `<img src="${settings.logo_url}" class="h-10 object-contain">`;
                 if (settings.hero_title) document.getElementById('iamurel-hero-title').innerHTML = settings.hero_title;
                 if (settings.hero_subtitle) document.getElementById('iamurel-hero-subtitle').innerText = settings.hero_subtitle;
-                
-                // Títulos customizados das sessões
                 if (settings.section_scenarios_title) document.getElementById('iamurel-scenarios-title').innerText = settings.section_scenarios_title;
                 if (settings.section_method_title) document.getElementById('iamurel-method-title').innerText = settings.section_method_title;
                 
-                // Popular opções de orçamento customizáveis do banco de dados
                 if (settings.form_budget_options) {
                     const selectOrcamento = document.getElementById('iamurel-orcamento');
-                    selectOrcamento.innerHTML = '<option value="Não definido">Ainda não defini</option>'; // Opção padrão
+                    selectOrcamento.innerHTML = '<option value="Não definido">Ainda não defini</option>'; 
                     const options = settings.form_budget_options.split('\n').filter(opt => opt.trim() !== '');
                     options.forEach(opt => {
                         const newOption = document.createElement('option');
@@ -52,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                 }
 
-                // Aplicar links de redes sociais
                 const applyLink = (selector, url) => {
                     if (url && url.trim() !== '') {
                         document.querySelectorAll(selector).forEach(btn => {
@@ -69,7 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) { console.error("Erro ao processar o visual", error); }
     }
 
-    // Carregar pacotes e renderizar as listas de benefícios
     async function loadPackages() {
         const container = document.getElementById('iamurel-packages-container');
         const { data: packages } = await iamurelSupabase.from('iamurel_packages').select('*').eq('is_published', true).order('sort_order');
@@ -80,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         container.innerHTML = packages.map(pkg => {
-            // Transforma o texto com quebras de linha em uma lista visual
             const processList = (text, icon, colorClass) => {
                 if (!text) return '';
                 return text.split('\n').filter(line => line.trim() !== '').map(line => 
@@ -98,19 +99,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 <h4 class="text-2xl font-bold text-[#F6EEDC] mb-2">${pkg.name}</h4>
                 <p class="text-gray-400 mb-6 text-sm leading-relaxed">${pkg.description || ''}</p>
                 <div class="text-3xl font-extrabold text-[#F6EEDC] mb-8">${pkg.price_value}</div>
-                
                 <ul class="mb-8 flex-grow">
                     ${includedHtml}
                     ${excludedHtml}
                 </ul>
-                
-                <a href="#diagnostico" onclick="document.getElementById('iamurel-necessidade').value='Não tenho certeza, preciso de ajuda';" class="w-full text-center border border-[#F6EEDC] text-[#F6EEDC] py-3 rounded-xl font-bold hover:bg-[#F6EEDC] hover:text-[#242322] transition mt-auto">Selecionar este</a>
+                <a href="#diagnostico" onclick="window.selectPackage('${pkg.name}')" class="w-full text-center border border-[#F6EEDC] text-[#F6EEDC] py-3 rounded-xl font-bold hover:bg-[#F6EEDC] hover:text-[#242322] transition mt-auto">Selecionar este</a>
             </div>
             `;
         }).join('');
     }
 
-    // Carregar Mini Portfólio (Cases)
     async function loadCases() {
         const section = document.getElementById('portfolio');
         const container = document.getElementById('iamurel-cases-container');
@@ -130,7 +128,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Carregar Avaliações
     async function loadReviews() {
         const section = document.getElementById('avaliacoes');
         const container = document.getElementById('iamurel-reviews-container');
@@ -147,7 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Carregar Perguntas Frequentes (FAQ)
     async function loadFaqs() {
         const section = document.getElementById('faq');
         const container = document.getElementById('iamurel-faq-container');
@@ -169,7 +165,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Envio do formulário de diagnóstico
     const leadForm = document.getElementById('iamurel-lead-form');
     if (leadForm) {
         leadForm.addEventListener('submit', async (e) => {
@@ -178,7 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.textContent = 'Processando...'; 
             btn.disabled = true;
 
-            // Define se a necessidade é a selecionada ou a digitada no campo "Outro"
             let necessidadeFinal = selectNecessidade.value;
             if (necessidadeFinal === 'Outro') {
                 necessidadeFinal = inputNecessidadeOutro.value;
@@ -214,7 +208,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Inicializar chamadas
     loadSettings();
     loadPackages();
     loadCases();
