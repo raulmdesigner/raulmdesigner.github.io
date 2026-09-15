@@ -8,53 +8,95 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; background-color: #F6EEDC; color: #242322; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            /* Fundo escuro sofisticado para destacar o vidro */
+            background: linear-gradient(135deg, #1e1e24 0%, #0f0f13 100%);
+            color: #F6EEDC;
+            min-height: 100vh;
+        }
+        /* Classe utilitária para o Liquid Glass Otimizado */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        /* Botão com efeito de vidro destacado */
+        .glass-button {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .glass-button:hover {
+            background: rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+        /* Inputs transparentes */
+        .glass-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            transition: border 0.3s ease;
+        }
+        .glass-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
 <body id="iamurel-body">
 
-    <header class="bg-slate-900 text-white fixed w-full top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold tracking-tighter">IAMUREL</h1>
+    <header class="fixed w-full top-0 z-50 glass-effect border-b-0">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 id="iamurel-logo-text" class="text-2xl font-bold tracking-tighter text-white">IAMUREL</h1>
             <nav class="hidden md:flex gap-6">
-                <a href="#iamurel-metodo" class="hover:text-blue-400">O Método</a>
-                <a href="#iamurel-pacotes" class="hover:text-blue-400">Pacotes</a>
+                <a href="#iamurel-metodo" class="text-gray-300 hover:text-white transition">O Método</a>
+                <a href="#iamurel-pacotes" class="text-gray-300 hover:text-white transition">Pacotes</a>
             </nav>
-            <a href="#iamurel-contato" class="bg-white text-slate-900 px-5 py-2 rounded-full font-medium">Começar um projeto</a>
+            <a href="#iamurel-contato" class="glass-button text-white px-6 py-2 rounded-full font-medium">Iniciar Projeto</a>
         </div>
     </header>
 
-    <main class="pt-24">
+    <main class="pt-32">
         <section class="py-20 px-4 text-center max-w-4xl mx-auto">
-            <h2 class="text-5xl md:text-6xl font-extrabold mb-6 text-slate-900">Conteúdo com direção. Design com intenção.</h2>
-            <p class="text-xl text-gray-700 mb-10">Combinamos inteligência artificial, direção criativa e design gráfico para transformar ideias soltas em uma presença de marca clara e consistente.</p>
-            <a href="#iamurel-contato" class="bg-blue-600 text-white px-8 py-4 rounded-full font-bold text-lg inline-block">Falar sobre meu projeto</a>
+            <h2 id="iamurel-hero-title" class="text-5xl md:text-7xl font-extrabold mb-6 text-white tracking-tight">
+                Conteúdo com direção.<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Design com intenção.</span>
+            </h2>
+            <p id="iamurel-hero-subtitle" class="text-xl text-gray-400 mb-12">Combinamos inteligência artificial, direção criativa e design gráfico para transformar ideias soltas em presença de marca.</p>
+            <a href="#iamurel-contato" class="glass-button text-white px-8 py-4 rounded-full font-bold text-lg inline-block">Falar sobre meu projeto</a>
         </section>
 
-        <section id="iamurel-pacotes" class="py-20 px-4">
+        <section id="iamurel-pacotes" class="py-24 px-4">
             <div class="max-w-6xl mx-auto">
-                <h3 class="text-3xl font-bold text-center mb-12">Planos de Aceleração</h3>
+                <h3 class="text-3xl font-bold text-center mb-16 text-white">Planos de Aceleração</h3>
                 <div id="iamurel-packages-container" class="grid md:grid-cols-3 gap-8">
-                    <p class="text-center col-span-full">Carregando pacotes...</p>
+                    <p class="text-center col-span-full text-gray-400">Buscando inteligência...</p>
                 </div>
             </div>
         </section>
 
-        <section id="iamurel-contato" class="py-20 px-4 bg-white">
-            <div class="max-w-3xl mx-auto">
-                <h3 class="text-3xl font-bold mb-8 text-center">Falar sobre um projeto</h3>
-                <form id="iamurel-lead-form" class="space-y-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="text" id="iamurel-nome" placeholder="Seu Nome" required class="w-full border p-3 rounded">
-                        <input type="text" id="iamurel-telefone" placeholder="Telefone / WhatsApp" required class="w-full border p-3 rounded">
+        <section id="iamurel-contato" class="py-24 px-4 relative">
+            <div class="max-w-3xl mx-auto glass-effect p-10 rounded-3xl relative z-10">
+                <h3 class="text-3xl font-bold mb-8 text-center text-white">Falar sobre um projeto</h3>
+                <form id="iamurel-lead-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" id="iamurel-nome" placeholder="Seu Nome" required class="glass-input w-full p-4 rounded-xl">
+                        <input type="text" id="iamurel-telefone" placeholder="WhatsApp" required class="glass-input w-full p-4 rounded-xl">
                     </div>
-                    <input type="email" id="iamurel-email" placeholder="Seu E-mail" required class="w-full border p-3 rounded">
-                    <input type="text" id="iamurel-negocio" placeholder="Qual é o seu negócio ou projeto?" required class="w-full border p-3 rounded">
-                    <textarea id="iamurel-mensagem" placeholder="Como podemos ajudar?" rows="4" required class="w-full border p-3 rounded"></textarea>
-                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded hover:bg-blue-700">Enviar Pedido</button>
+                    <input type="email" id="iamurel-email" placeholder="Seu E-mail" required class="glass-input w-full p-4 rounded-xl">
+                    <input type="text" id="iamurel-negocio" placeholder="Qual é o seu negócio?" required class="glass-input w-full p-4 rounded-xl">
+                    <textarea id="iamurel-mensagem" placeholder="Como podemos ajudar?" rows="4" required class="glass-input w-full p-4 rounded-xl"></textarea>
+                    <button type="submit" class="w-full glass-button text-white font-bold py-4 rounded-xl">Enviar Pedido</button>
                 </form>
-                <div id="iamurel-form-message" class="text-center"></div>
+                <div id="iamurel-form-message" class="text-center mt-4"></div>
             </div>
+            
+            <!-- Elemento decorativo de fundo para reforçar o vidro fosco -->
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-600 rounded-full blur-[120px] opacity-20 z-0 pointer-events-none"></div>
         </section>
     </main>
 
