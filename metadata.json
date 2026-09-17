@@ -1,0 +1,6 @@
+{
+  "name": "IAMUREL",
+  "description": "IAMUREL, Agência de conteúdo AI-First. Santa Catarina - Brasil. Conteúdo com direção e design com intenção.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
