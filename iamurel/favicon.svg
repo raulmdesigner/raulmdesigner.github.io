@@ -1,6 +1,9 @@
-<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- IAMUREL Favicon -->
   <rect width="100" height="100" rx="22" fill="#091A24"/>
-  <path d="M23 15C23 20.5 18 25 12 25C18 25 23 29.5 23 35C23 29.5 28 25 34 25C28 25 23 20.5 23 15Z" fill="#FF4A1C"/>
-  <rect x="12" y="39" width="22" height="46" rx="7" fill="#FFFFFF"/>
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M43 20C43 15.5 46.5 12 51 12H77C82.5 12 87 16.5 87 22V78C87 83.5 82.5 88 77 88H51C46.5 88 43 84.5 43 80V20ZM58 37C58 33 61.5 30 65.5 30H69.5C73.5 30 77 33 77 37V63C77 67 73.5 70 69.5 70H65.5C61.5 70 58 67 58 63V37Z" fill="#FFFFFF"/>
+  <g transform="translate(10, 10) scale(0.8)">
+    <path d="M13 3C13 10 7 16 0 16C7 16 13 22 13 29C13 22 19 16 26 16C19 16 13 10 13 3Z" fill="#FF4A1C"/>
+    <rect x="0" y="34" width="26" height="66" rx="9" fill="#FFFFFF"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M37 10C37 4.5 41.5 0 47 0H88C94.5 0 100 5.5 100 12V88C100 94.5 94.5 100 88 100H47C41.5 100 37 95.5 37 90V10ZM56 34C56 28.5 60.5 24 66 24H71C76.5 24 81 28.5 81 34V66C81 71.5 76.5 76 71 76H66C60.5 76 56 71.5 56 66V34Z" fill="#FFFFFF"/>
+  </g>
 </svg>
