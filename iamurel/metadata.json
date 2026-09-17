@@ -1,0 +1,6 @@
+{
+  "name": "IAMUREL",
+  "description": "Empresa AI-First de criação de conteúdo, design gráfico e direção criativa.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
