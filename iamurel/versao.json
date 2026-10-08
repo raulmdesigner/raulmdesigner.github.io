@@ -1,6 +1,14 @@
 {
-  "versao": "4.8.0",
-  "descricao": "Proteção de leads, permissões administrativas, limites de entrada e revisão técnica",
-  "version": "4.8.0",
-  "security_review": "2026-10-08"
+  "versao": "4.9.0",
+  "descricao": "FAQ com busca, WhatsApp contextual, depoimentos, Google Mail e estatísticas privadas",
+  "version": "4.9.0",
+  "security_review": "2026-10-08",
+  "updated_at": "2026-10-08",
+  "features": [
+    "faq-search",
+    "contextual-whatsapp",
+    "real-testimonials",
+    "google-mail",
+    "private-analytics"
+  ]
 }
