@@ -1,7 +1,7 @@
 {
-  "versao": "4.9.1",
-  "descricao": "Apoiadores editáveis no rodapé, com links e animações",
-  "version": "4.9.1",
+  "versao": "4.9.2",
+  "descricao": "Guia de identidade visual, cores dos apoiadores e privacidade",
+  "version": "4.9.2",
   "security_review": "2026-10-08",
   "updated_at": "2026-10-09",
   "features": [
@@ -10,6 +10,8 @@
     "real-testimonials",
     "google-mail",
     "private-analytics",
-    "supporters"
+    "supporters",
+    "editable-brand-kit",
+    "supporter-card-colors"
   ]
 }
