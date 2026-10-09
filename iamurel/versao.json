@@ -1,14 +1,15 @@
 {
-  "versao": "4.9.0",
-  "descricao": "FAQ com busca, WhatsApp contextual, depoimentos, Google Mail e estatísticas privadas",
-  "version": "4.9.0",
+  "versao": "4.9.1",
+  "descricao": "Apoiadores editáveis no rodapé, com links e animações",
+  "version": "4.9.1",
   "security_review": "2026-10-08",
-  "updated_at": "2026-10-08",
+  "updated_at": "2026-10-09",
   "features": [
     "faq-search",
     "contextual-whatsapp",
     "real-testimonials",
     "google-mail",
-    "private-analytics"
+    "private-analytics",
+    "supporters"
   ]
 }
