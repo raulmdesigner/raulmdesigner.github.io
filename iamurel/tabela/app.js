@@ -1,77 +1,59 @@
-(()=>{
-  'use strict';
-  const C=window.IAMUREL;
-  const $=s=>document.querySelector(s);
-  const q=new URLSearchParams(location.search);
-  const clean=t=>(t||'').slice(0,80);
-  const esc=t=>String(t??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-  const lite=matchMedia('(prefers-reduced-motion:reduce)').matches||(navigator.connection&&navigator.connection.saveData)||(navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2);
-  document.documentElement.classList.toggle('lite',!!lite);
-  const ln=(a,i=0)=>a.map((t,k)=>`<span style="--i:${i+k}">${t}</span>`).join('<br>');
-  const kick=(n,t)=>`<p class="kicker reveal" style="--i:${n}">[ ${String(n).padStart(2,'0')} / ${t} ]</p>`;
-  const filters=[['todos','Tudo'],['atracao','Atrair movimento'],['confianca','Mostrar serviço'],['beleza','Beleza'],['servicos','Serviços'],['agro','Agro']];
-  const caseCard=(a,k)=>`<article class="case-card reveal" data-tags="${a.tags.join(' ')}" style="--i:${k+2}"><div class="case-media"><img src="${a.src}" alt="${esc(a.alt)}" width="860" height="1075" loading="${k?'lazy':'eager'}" decoding="async"><span>${esc(a.legenda)}</span></div><div class="case-body"><div class="case-meta"><span>${esc(a.objetivo)}</span><span>${String(k+1).padStart(2,'0')}</span></div><h3>${a.titulo}</h3><p>${a.texto}</p><button class="case-action" type="button" data-case="${esc(a.legenda)}">Quero uma direção assim ↗</button></div></article>`;
-
-  const S=[
-    {theme:'dark',h:`<section class="slide hero-slide t-pe" id="s1"><div class="in hero-layout"><div class="hero-copy"><div class="hero-logo reveal" role="img" aria-label="${esc(C.marca)}" style="--i:0"></div>${kick(1,C.hero.tag)}<h1 class="reveal" style="--i:2">${ln(['Sua marca pode','aparecer <em>melhor.</em>'],2)}</h1><p class="lead reveal" style="--i:4">Uma proposta de conteúdo, design e vídeo para empresas locais que querem parar de improvisar nas redes.</p><div class="hero-actions reveal" style="--i:5"><button class="btn" type="button" data-go="3">Ver o que entra ↓</button><button class="btn ghost" type="button" id="heroTalk">Falar pelo WhatsApp ↗</button></div><div class="hero-note reveal" style="--i:6" id="para"><span>Para negócios locais</span><span>Feito para decidir rápido</span><span>Sem post por postar</span></div></div><div class="hero-build" aria-label="A proposta se constrói com direção, design e conteúdo"><div class="build-piece build-back"></div><div class="build-piece build-orange"></div><div class="build-piece build-photo"><img src="img/arte-01.jpg" alt="Exemplo de peça de social media para beleza"></div><div class="build-piece build-label"><span class="smallcaps">a ideia é simples</span><strong>mostrar o que já existe no seu negócio.</strong></div><span class="build-caption">role para construir ↘</span></div></div><div class="ticker" aria-hidden="true"><div>${C.ticker.concat(C.ticker).map(t=>`<span>${esc(t)}</span>`).join('')}</div></div></section>`},
-    {theme:'light',h:`<section class="slide t-cr" id="s2"><div class="in"><div class="manifesto"><div>${kick(2,'O ponto de partida')}<h2 class="reveal" style="--i:2">Não é sobre postar.<br>É sobre criar <em>percepção.</em></h2></div><aside class="manifesto-aside reveal" style="--i:3"><p>Quem encontra sua marca precisa entender, confiar e lembrar — nessa ordem.</p></aside></div><div class="principles">${C.pilares.map((p,k)=>`<article class="principle reveal" style="--i:${k+3}"><div class="num">0${k+1}</div><h3>${p[0]}</h3><p>${p[1]}</p></article>`).join('')}</div></div></section>`},
-    {theme:'dark',h:`<section class="slide t-ma" id="s3"><div class="in"><div class="work-head"> <div>${kick(3,'A prova antes do contrato')}<h2 class="reveal" style="--i:2">O seu negócio<br>pode <em>aparecer.</em></h2></div><p class="lead reveal" style="--i:3">Cada peça precisa cumprir uma função: atrair movimento, mostrar serviço ou fortalecer confiança.</p></div><div class="filterbar reveal" style="--i:4" role="toolbar" aria-label="Filtrar exemplos">${filters.map((f,k)=>`<button type="button" data-filter="${f[0]}" aria-pressed="${k===0?'true':'false'}">${f[1]}</button>`).join('')}</div><div class="gallery-rail" id="gallery">${C.artes.map(caseCard).join('')}</div></div></section>`},
-    {theme:'light',h:`<section class="slide plans-slide t-cr" id="s4"><div class="in"><div class="plans-intro"> <div>${kick(4,'A escolha do ritmo')}<h2 class="reveal" style="--i:2">Três jeitos de<br>ficar <em>presente.</em></h2></div><p class="lead reveal" style="--i:3">Escolha o ponto de partida que mais parece com o momento do seu negócio. O Médio é o equilíbrio entre constância e variedade.</p></div><div class="plan-stage">${C.planos.map((p,k)=>`<article class="plan reveal" style="--i:${k+3}"><small>${esc(p.tag)}</small>${p.hot?'<span class="pill">mais escolhido</span>':''}<h3>${esc(p.nome)}</h3><p class="desc">${p.desc}</p><p class="for"><strong>${p.para}</strong></p><div class="pr">${p.aPartir?'<em>A partir de</em>':''}R$ <b data-n="${esc(p.preco)}">${esc(p.preco)}</b> <span>/mês</span></div><ul>${p.itens.map(item=>`<li><b>${item[0]}</b>${item[1]}</li>`).join('')}${p.checks.map(c=>`<li class="ck">${c}</li>`).join('')}</ul><details><summary>O que isso resolve?</summary><p>${p.detalhe}</p></details><p class="nt">${p.nota}</p><button class="btn" type="button" data-p="${p.id}">Quero o ${esc(p.nome)} ↗</button></article>`).join('')}</div><div class="plan-foot reveal" style="--i:7"><span><strong>Todos os planos:</strong> produção mensal antecipada e aprovação antes de publicar.</span><span>Valores até ${esc(C.validade)}.</span></div></div></section>`},
-    {theme:'dark',h:`<section class="slide quiz-slide t-pe" id="s5"><div class="in quiz-layout"><div class="quiz-side">${kick(5,'Sem adivinhação')}<div class="display reveal" style="--i:2">O plano certo começa com a pergunta certa.</div></div><div class="qz reveal" style="--i:3" id="qz"><p class="q-intro">Três respostas rápidas para encontrar um ponto de partida.</p></div></div></section>`},
-    {theme:'light',h:`<section class="slide t-cr" id="s6"><div class="in"><div class="process-intro"> <div>${kick(6,'A rotina por trás do feed')}<h2 class="reveal" style="--i:2">Do primeiro papo<br>ao próximo <em>mês.</em></h2></div><p class="lead reveal" style="--i:3">A comunicação deixa de depender da correria porque existe um ritmo combinado.</p></div><div class="steps">${C.passos.map((p,k)=>`<article class="step reveal" style="--i:${k+3}"><small>${p[0]}</small><h3>${p[1]}</h3><p>${p[2]}</p></article>`).join('')}</div><div class="faq-grid"><div><div class="faq-title reveal" style="--i:7">Ainda ficou<br>alguma <em>dúvida?</em></div><ul class="cond reveal" style="--i:8">${C.condicoes.map(c=>`<li>${c}</li>`).join('')}<li id="val">Condições vigentes até ${esc(C.validade)}.</li></ul></div><div class="reveal" style="--i:8">${C.faq.map(f=>`<details><summary>${f[0]}</summary><p>${f[1]}</p></details>`).join('')}</div></div></div></section>`},
-    {theme:'orange',h:`<section class="slide final-slide t-or" id="s7"><div class="in final-grid"><div><div class="kicker reveal" style="--i:1">[ 07 / O próximo passo ]</div><h2 class="final-title reveal" style="--i:2">Bora fazer sua marca <em>aparecer?</em></h2><p class="final-copy reveal" style="--i:3">Você escolhe um plano, manda o contexto e a conversa continua no WhatsApp. Sem formulário frio. Sem apresentação genérica.</p><div class="final-links reveal" style="--i:4"><a class="btn ghost" href="${C.insta}" target="_blank" rel="noopener noreferrer">Ver mais no Instagram ↗</a><a class="btn ghost" href="mailto:${C.email}?subject=${encodeURIComponent('Quero organizar minhas redes')}">Enviar por e-mail</a></div><p class="final-mark reveal" style="--i:5">IAMUREL · conteúdo com direção</p></div><div class="form reveal" style="--i:3"><div class="form-head"><h3>Vamos conversar?</h3><p>Preencha o básico. O WhatsApp abre com uma mensagem já contextualizada.</p></div><label>Seu nome<input type="text" id="f-nome" autocomplete="name" placeholder="Como posso te chamar?"></label><label>Negócio<input type="text" id="f-emp" placeholder="Nome da empresa ou marca"></label><label>Instagram<input type="text" id="f-ig" placeholder="@seuperfil"></label><div class="lb">Plano de interesse<div class="chips" id="chips"></div></div><div class="lb">Acréscimos (opcional)<div class="chips" id="acs"></div></div><label>Mensagem (opcional)<textarea id="f-msg" rows="2" placeholder="O que você gostaria de melhorar nas redes?"></textarea><p class="channel-note" id="form-summary">Você ainda pode escolher um plano no WhatsApp.</p><button class="btn" id="send" type="button">Abrir conversa no WhatsApp →</button></div></div></section>`}
-  ];
-
-  const deck=$('#deck');
-  deck.innerHTML=S.map(s=>s.h).join('');
-  const sl=[...deck.children];
-  const dots=$('#dots');
-  dots.innerHTML=sl.map((_,k)=>`<button type="button" role="tab" data-k="${k}" aria-label="Seção ${k+1}" aria-selected="false"></button>`).join('');
-
-  const cli=clean(q.get('cliente')),emp=clean(q.get('empresa')),ate=clean(q.get('ate'));
-  if(cli){$('#f-nome').value=cli;$('#para').insertAdjacentHTML('afterbegin',`<span>Preparada para ${esc(cli)}</span>`)}
-  if(emp)$('#f-emp').value=emp;
-  if(ate)$('#val').textContent='Condições vigentes até '+esc(ate)+'.';
-
-  const opts=C.planos.map(p=>[p.id,p.nome]).concat([['duvida','Ainda não sei']]);
-  $('#chips').innerHTML=opts.map(o=>`<label><input type="radio" name="pl" value="${o[0]}"><span>${o[1]}</span></label>`).join('');
-  $('#acs').innerHTML=C.acrescimos.map(a=>`<label><input type="checkbox" name="ac" value="${esc(a)}"><span>${esc(a)}</span></label>`).join('');
-  const pick=id=>{const r=document.querySelector(`[name=pl][value="${id}"]`);if(r){r.checked=true;updateFormSummary()}};
-  const updateFormSummary=()=>{const v=document.querySelector('[name=pl]:checked'),p=C.planos.find(x=>x.id===(v&&v.value));$('#form-summary').textContent=p?`Plano selecionado: ${p.nome} · R$ ${p.preco}/mês`:'Você ainda pode escolher um plano no WhatsApp.'};
-  $('#chips').addEventListener('change',updateFormSummary);
-  pick(opts.some(o=>o[0]===q.get('plano'))?q.get('plano'):'duvida');
-
-  function goForm(context){if(context&&!$('#f-msg').value)$('#f-msg').value=context;go(6);setTimeout(()=>$('#f-nome')?.focus(),450)}
-  document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(+b.dataset.go)));
-  document.querySelectorAll('[data-p]').forEach(b=>b.addEventListener('click',()=>{const p=C.planos.find(x=>x.id===b.dataset.p);pick(b.dataset.p);goForm(`Quero entender se o plano ${p.nome} faz sentido para o meu negócio.`)}));
-  document.querySelectorAll('.case-action').forEach(b=>b.addEventListener('click',()=>goForm(`Vi o exemplo de ${b.dataset.case} e quero uma direção parecida para o meu negócio.`)));
-  $('#heroTalk').addEventListener('click',()=>goForm('Quero organizar as redes do meu negócio.'));
-  $('#cta').addEventListener('click',()=>goForm('Quero entender qual plano combina com o meu negócio.'));
-
-  const cards=[...document.querySelectorAll('.case-card')];
-  document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{const key=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));cards.forEach(card=>card.hidden=key!=='todos'&&!card.dataset.tags.split(' ').includes(key))}));
-
-  const qz=$('#qz');let qi=0,best=0;
-  const planDeliveries=p=>p.itens.slice(0,4).map(i=>`<span>${i[0]} ${i[1]}</span>`).join('');
-  function quiz(){
-    if(qi>=C.quiz.length){const p=C.planos[Math.min(best,C.planos.length-1)];qz.innerHTML=`<div class="res"><p class="kicker">Seu ponto de partida</p><div class="num">${esc(p.nome)}</div><p>${p.desc} ${p.para}</p><div class="deliver">${planDeliveries(p)}</div><p class="muted">Quer confirmar se esse ritmo combina com o seu momento? A gente continua no WhatsApp.</p><div class="hero-actions"><button class="btn" id="qy" type="button">Quero o ${esc(p.nome)} ↗</button><button class="btn ghost" id="qr" type="button">Refazer</button></div></div>`;$('#qy').onclick=()=>{pick(p.id);goForm(`Fiz o quiz e o plano ${p.nome} parece fazer sentido para o meu negócio.`)};$('#qr').onclick=()=>{qi=0;best=0;quiz()};return}
-    const Q=C.quiz[qi];qz.innerHTML=`<p class="q-intro">A pergunta ${qi+1} de ${C.quiz.length} leva menos de um minuto.</p><div class="bar"><i style="transform:scaleX(${(qi+1)/C.quiz.length})"></i></div><p class="kicker">Pergunta ${qi+1} de ${C.quiz.length}</p><h3>${Q.p}</h3><div class="opts">${Q.o.map(o=>`<button class="opt" type="button" data-v="${o[1]}">${o[0]}</button>`).join('')}</div>`;
-    qz.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{best=Math.max(best,+b.dataset.v);qi++;quiz()}));
-  }
-  quiz();
-
-  $('#send').addEventListener('click',()=>{const n=$('#f-nome');if(!n.value.trim()){n.classList.add('err');n.focus();return}n.classList.remove('err');const v=document.querySelector('[name=pl]:checked'),p=C.planos.find(x=>x.id===(v&&v.value)),ac=[...document.querySelectorAll('[name=ac]:checked')].map(x=>x.value),g=id=>$(id).value.trim();const L=['Olá! Vim pela proposta da IAMUREL.','',`Nome: ${g('#f-nome')}`];if(g('#f-emp'))L.push(`Negócio: ${g('#f-emp')}`);if(g('#f-ig'))L.push(`Instagram: ${g('#f-ig')}`);L.push(`Plano de interesse: ${p?`${p.nome} (R$ ${p.preco}/mês${p.aPartir?', a partir de':''})`:'ainda não sei'}`);if(ac.length)L.push(`Acréscimos: ${ac.join(', ')}`);if(g('#f-msg'))L.push(`Mensagem: ${g('#f-msg')}`);L.push('','Pode me orientar sobre o próximo passo?');window.open(`https://wa.me/${C.whats}?text=${encodeURIComponent(L.join('\n'))}`,'_blank','noopener')});
-
-  function count(s){if(lite)return;s.querySelectorAll('[data-n]').forEach(b=>{const t=+b.dataset.n.replace(/\./g,'').replace(',','.'),t0=performance.now();const f=n=>{const k=Math.min(1,(n-t0)/900),e=1-Math.pow(1-k,3);b.textContent=(t*e).toFixed(2).replace('.',',');if(k<1)requestAnimationFrame(f);else b.textContent=b.dataset.n};requestAnimationFrame(f)})}
-
-  let active=0;
-  function setActive(n){active=n;sl.forEach((s,k)=>s.classList.toggle('on',k===n));[...dots.children].forEach((d,k)=>{d.classList.toggle('on',k===n);d.setAttribute('aria-selected',String(k===n))});const dark=S[n].theme==='dark';$('#topbar').classList.toggle('light',!dark);if(n===3)count(sl[n]);history.replaceState(null,'','#'+(n+1))}
-  function go(n){const next=Math.max(0,Math.min(sl.length-1,n));sl[next].scrollIntoView({behavior:lite?'auto':'smooth',block:'start'});setActive(next)}
-  dots.addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(b)go(+b.dataset.k)});
-  const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){const n=sl.indexOf(entry.target);if(n>=0)setActive(n)}}),{threshold:.45});
-  sl.forEach(s=>observer.observe(s));
-  addEventListener('keydown',e=>{if(e.target.closest('input,textarea,button,summary,a'))return;if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();go(active+1)}else if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();go(active-1)}else if(e.key==='Home'){e.preventDefault();go(0)}else if(e.key==='End'){e.preventDefault();go(sl.length-1)}});
-  addEventListener('scroll',()=>{const y=scrollY;$('#topbar').classList.toggle('light',y>innerHeight*.8&&active!==2&&active!==4)}, {passive:true});
-  const initial=Math.max(0,Math.min(sl.length-1,(+location.hash.slice(1)||1)-1));
-  setActive(initial);if(initial)requestAnimationFrame(()=>sl[initial].scrollIntoView({block:'start'}));
+(()=>{'use strict';
+const C=window.IAMUREL,$=s=>document.querySelector(s),q=new URLSearchParams(location.search),clean=t=>(t||'').slice(0,60);
+const lite=matchMedia('(prefers-reduced-motion:reduce)').matches||(navigator.connection&&navigator.connection.saveData)||(navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2);
+document.documentElement.classList.toggle('lite',!!lite);
+const ln=(a,i=0)=>a.map((t,k)=>`<span class="ln"><span style="--i:${i+k}">${t}</span></span>`).join('');
+const idx=(n,t)=>`<p class="kick rv">[ ${String(n).padStart(2,'0')} / ${t} ]</p>`;
+const tick=C.ticker.concat(C.ticker).concat(C.ticker).concat(C.ticker).map(t=>`<span>${t}</span>`).join('');
+const S=[
+ {t:'pe',dark:1,h:`<div class="in"><div class="logo rv" role="img" aria-label="${C.marca}"></div>${idx(1,C.hero.tag)}<h1>${ln(C.hero.linhas,1)}</h1><p class="lead rv" style="--i:4">${C.hero.sub}</p><p class="hint rv" style="--i:5" id="para">Deslize para o lado →</p></div>
+  <svg class="sun" viewBox="0 0 400 200" aria-hidden="true"><path d="M0 200a200 200 0 0 1 400 0z" fill="#F27A00"/><path d="M40 200a160 160 0 0 1 320 0z" fill="#E0894C"/><path d="M80 200a120 120 0 0 1 240 0z" fill="#60BCBC"/><path d="M120 200a80 80 0 0 1 160 0z" fill="#F6EEDC"/><path d="M160 200a40 40 0 0 1 80 0z" fill="#074145"/></svg><div class="tk" aria-hidden="true"><div>${tick}</div></div>`},
+ {t:'cr',h:`<div class="in">${idx(2,'Quem somos')}<h2>${ln(C.sobre.titulo.split('<br>'),1)}</h2><p class="lead rv" style="--i:3">${C.sobre.texto}</p><div class="grid">${C.pilares.map((p,k)=>`<div class="rv" style="--i:${k+4}"><div class="num">0${k+1}</div><h3>${p[0]}</h3><p>${p[1]}</p></div>`).join('')}</div></div>`},
+ {t:'ma',dark:1,h:`<div class="in">${idx(3,'Exemplos')}<h2>${ln(['Como a sua marca','pode <em>aparecer.</em>'],1)}</h2><div class="grid arts">${C.artes.map((a,k)=>`<figure class="rv" style="--i:${k+3}"><img src="${a.src}" alt="${a.alt}" width="860" height="1075" loading="lazy" decoding="async"><figcaption>${a.legenda}</figcaption></figure>`).join('')}</div></div>`},
+ {t:'cr',h:`<div class="in" style="gap:18px">${idx(4,'Planos mensais')}<h2 style="font-size:clamp(30px,4vw,52px)">${ln(['Escolha o ritmo do seu <em>conteúdo.</em>'],1)}</h2><div class="grid plans">${C.planos.map((p,k)=>`<article class="plan rv ${p.hot?'hot':''}" style="--i:${k+3}"><small>${p.tag}</small>${p.hot?'<span class="pill">Em destaque</span>':''}<h3>${p.nome}</h3><p>${p.desc}</p><div class="pr">${p.aPartir?'<em>A partir de</em>':''}R$ <b data-n="${p.preco}">${p.preco}</b> /mês</div><ul>${p.itens.map(i=>`<li><b>${i[0]}</b>${i[1]}</li>`).join('')}${p.checks.map(c=>`<li class="ck">${c}</li>`).join('')}</ul><p class="nt">${p.nota}</p><button class="btn" data-p="${p.id}" type="button">Quero o ${p.nome}</button><small>${C.rodape}</small></article>`).join('')}</div></div>`},
+ {t:'pe',dark:1,h:`<div class="in">${idx(5,'Qual plano combina')}<h2>${ln(['Em 3 toques, o plano','<em>ideal</em> para você.'],1)}</h2><div class="qz rv" style="--i:3" id="qz"></div></div>`},
+ {t:'cr',h:`<div class="in">${idx(6,'Como funciona')}<h2>${ln(['Simples do início','ao <em>contrato.</em>'],1)}</h2><div class="grid">${C.passos.map((p,k)=>`<div class="rv" style="--i:${k+3}"><div class="num">0${k+1}</div><h3>${p[0]}</h3><p>${p[1]}</p></div>`).join('')}</div><div class="two rv" style="--i:7"><ul class="cond">${C.condicoes.map(c=>`<li>${c}</li>`).join('')}<li id="val">Condições vigentes até ${C.validade}.</li></ul><div>${C.faq.map(f=>`<details><summary>${f[0]}</summary><p>${f[1]}</p></details>`).join('')}</div></div></div>`},
+ {t:'or',h:`<div class="in">${idx(7,'Próximo passo')}<h2 style="color:#242322">${ln(['Peça a sua','proposta.'],1)}</h2><div class="form rv" style="--i:3"><label>Seu nome<input type="text" id="f-nome" autocomplete="name" placeholder="Como posso te chamar?"></label><label>Negócio<input type="text" id="f-emp" placeholder="Nome da empresa ou marca"></label><label>Instagram<input type="text" id="f-ig" placeholder="@seuperfil"></label><div class="lb">Plano de interesse<div class="chips" id="chips"></div></div><div class="lb">Acréscimos (opcional)<div class="chips" id="acs"></div></div><label>Mensagem (opcional)<textarea id="f-msg" rows="2" placeholder="Conte rapidamente o que você precisa"></textarea></label><button class="btn" id="send" type="button">Enviar pelo WhatsApp →</button></div>
+  <div class="ch rv" style="--i:4"><a class="btn ghost" href="${C.insta}" target="_blank" rel="noopener noreferrer">Instagram ${C.instaNome} ↗</a><a class="btn ghost" href="mailto:${C.email}?subject=${encodeURIComponent('Proposta IAMUREL')}">E-mail ${C.email}</a><a class="btn ghost" href="${C.site}" target="_blank" rel="noopener noreferrer">Site principal ↗</a></div></div>`}
+];
+const deck=$('#deck'),dots=$('#dots');
+deck.innerHTML=S.map(s=>`<section class="slide t-${s.t}">${s.h}</section>`).join('');
+const sl=[...deck.children];dots.innerHTML=S.map((_,k)=>`<button type="button" role="tab" aria-label="Seção ${k+1}" data-k="${k}"></button>`).join('');
+/* personalização por link */
+const cli=clean(q.get('cliente')),emp=clean(q.get('empresa')),ate=clean(q.get('ate'));
+if(cli){$('#para').textContent='Preparada para '+cli;$('#f-nome').value=cli}if(emp)$('#f-emp').value=emp;if(ate)$('#val').textContent='Condições vigentes até '+ate+'.';
+const opts=C.planos.map(p=>[p.id,p.nome]).concat([['duvida','Ainda não sei']]);
+$('#chips').innerHTML=opts.map(o=>`<label><input type="radio" name="pl" value="${o[0]}"><span>${o[1]}</span></label>`).join('');
+$('#acs').innerHTML=C.acrescimos.map(a=>`<label><input type="checkbox" name="ac" value="${a}"><span>${a}</span></label>`).join('');
+const pick=id=>{const r=document.querySelector(`[name=pl][value="${id}"]`);if(r)r.checked=true};pick(opts.some(o=>o[0]===q.get('plano'))?q.get('plano'):'duvida');
+document.querySelectorAll('.plan .btn').forEach(b=>b.onclick=()=>{pick(b.dataset.p);go(sl.length-1)});
+/* quiz */
+const qz=$('#qz');let qi=0,best=0;
+function quiz(){if(qi>=C.quiz.length){const p=C.planos[Math.min(best,C.planos.length-1)];qz.innerHTML=`<div class="res"><p class="kick">Recomendado para você</p><div class="num">${p.nome}</div><p>${p.desc}</p><p>R$ ${p.preco}/mês${p.aPartir?' (a partir de)':''}</p><div class="ch"><button class="btn" type="button" id="qy">Quero o ${p.nome}</button><button class="btn ghost" type="button" id="qr">Refazer</button></div></div>`;
+  $('#qy').onclick=()=>{pick(p.id);go(sl.length-1)};$('#qr').onclick=()=>{qi=0;best=0;quiz()};return}
+ const Q=C.quiz[qi];qz.innerHTML=`<div class="bar"><i style="transform:scaleX(${(qi+1)/C.quiz.length})"></i></div><p class="kick">Pergunta ${qi+1} de ${C.quiz.length}</p><h3 style="font:650 clamp(22px,3vw,34px)/1.15 var(--serif)">${Q.p}</h3><div class="opts">${Q.o.map((o,k)=>`<button class="opt" type="button" data-v="${o[1]}">${o[0]}</button>`).join('')}</div>`;
+ qz.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{best=Math.max(best,+b.dataset.v);qi++;quiz()})}
+quiz();
+/* envio pelo WhatsApp (sem servidor, sem armazenar nada) */
+$('#send').onclick=()=>{const n=$('#f-nome');if(!n.value.trim()){n.classList.add('err');n.focus();return}n.classList.remove('err');
+ const v=document.querySelector('[name=pl]:checked'),p=C.planos.find(x=>x.id===(v&&v.value)),ac=[...document.querySelectorAll('[name=ac]:checked')].map(x=>x.value),g=id=>$(id).value.trim();
+ const L=['Olá! Vim pela tabela de preços da IAMUREL.','','Nome: '+g('#f-nome')];if(g('#f-emp'))L.push('Negócio: '+g('#f-emp'));if(g('#f-ig'))L.push('Instagram: '+g('#f-ig'));
+ L.push('Plano de interesse: '+(p?`${p.nome} (R$ ${p.preco}/mês${p.aPartir?', a partir de':''})`:'ainda não sei'));if(ac.length)L.push('Acréscimos: '+ac.join(', '));if(g('#f-msg'))L.push('Mensagem: '+g('#f-msg'));L.push('','Pode me enviar a proposta?');
+ window.open('https://wa.me/'+C.whats+'?text='+encodeURIComponent(L.join('\n')),'_blank','noopener')};
+/* contador de preço (só em aparelhos que aguentam) */
+function count(s){if(lite)return;s.querySelectorAll('[data-n]').forEach(b=>{const t=+b.dataset.n.replace('.','').replace(',','.'),t0=performance.now();
+ const f=n=>{const k=Math.min(1,(n-t0)/900),e=1-Math.pow(1-k,3);b.textContent=(t*e).toFixed(2).replace('.',',');if(k<1)requestAnimationFrame(f);else b.textContent=b.dataset.n};requestAnimationFrame(f)})}
+/* deck: arrastar, setas, roda, teclado */
+let i=0,x0=null,y0=0,t0=0,dx=0,ax=null,lock=0;
+function go(n,anim=true){const was=i;i=Math.max(0,Math.min(sl.length-1,n));deck.classList.toggle('drag',!anim);deck.style.transform=`translate3d(${-i*innerWidth}px,0,0)`;
+ sl.forEach((s,k)=>s.classList.toggle('on',k===i));[...dots.children].forEach((d,k)=>{d.classList.toggle('on',k===i);d.setAttribute('aria-selected',k===i)});
+ document.body.style.setProperty('--nv',S[i].dark?'#F6EEDC':'#074145');$('#mark').style.opacity=i?1:0;$('#pv').disabled=!i;$('#nx').disabled=i===sl.length-1;
+ if(i!==was&&S[i].h.includes('data-n'))count(sl[i]);history.replaceState(null,'','#'+(i+1))}
+dots.onclick=e=>{const b=e.target.closest('[data-k]');if(b)go(+b.dataset.k)};$('#cta').onclick=()=>go(sl.length-1);$('#pv').onclick=()=>go(i-1);$('#nx').onclick=()=>go(i+1);addEventListener('resize',()=>go(i,false));
+deck.addEventListener('pointerdown',e=>{if(e.target.closest('input,textarea,button,label,a,summary'))return;x0=e.clientX;y0=e.clientY;t0=performance.now();ax=null;dx=0},{passive:true});
+addEventListener('pointermove',e=>{if(x0==null)return;const mx=e.clientX-x0,my=e.clientY-y0;if(!ax&&Math.hypot(mx,my)>8)ax=Math.abs(mx)>Math.abs(my)?'x':'y';if(ax==='x'){dx=mx;deck.classList.add('drag');deck.style.transform=`translate3d(${-i*innerWidth+dx}px,0,0)`}},{passive:true});
+const end=()=>{if(x0==null)return;const v=dx/Math.max(1,performance.now()-t0);x0=null;if(ax==='x')go(dx<-60||v<-.5?i+1:dx>60||v>.5?i-1:i);ax=null};addEventListener('pointerup',end);addEventListener('pointercancel',end);
+addEventListener('keydown',e=>{if(e.target.closest('input,textarea'))return;const k=e.key;if(k==='ArrowRight'||k==='PageDown'||k===' '){e.preventDefault();go(i+1)}else if(k==='ArrowLeft'||k==='PageUp')go(i-1);else if(k==='Home')go(0);else if(k==='End')go(sl.length-1)});
+addEventListener('wheel',e=>{const s=sl[i],h=Math.abs(e.deltaX)>Math.abs(e.deltaY),d=h?e.deltaX:e.deltaY;if(lock||Math.abs(d)<25)return;if(!h&&(d>0?s.scrollTop+s.clientHeight<s.scrollHeight-4:s.scrollTop>4))return;lock=1;go(i+(d>0?1:-1));setTimeout(()=>lock=0,800)},{passive:true});
+(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>go(Math.max(0,Math.min(sl.length-1,(+location.hash.slice(1)||1)-1)),false));
 })();
