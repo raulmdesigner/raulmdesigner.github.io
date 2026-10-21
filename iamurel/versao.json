@@ -1,9 +1,9 @@
 {
-  "versao": "4.9.2",
-  "descricao": "Guia de identidade visual, cores dos apoiadores e privacidade",
-  "version": "4.9.2",
+  "versao": "4.10.0",
+  "descricao": "Abertura editorial, cursor contextual, manifesto e galeria de imagens e vídeos editável",
+  "version": "4.10.0",
   "security_review": "2026-10-08",
-  "updated_at": "2026-10-09",
+  "updated_at": "2026-10-21",
   "features": [
     "faq-search",
     "contextual-whatsapp",
@@ -12,6 +12,11 @@
     "private-analytics",
     "supporters",
     "editable-brand-kit",
-    "supporter-card-colors"
+    "supporter-card-colors",
+    "contextual-scroll-cursor",
+    "rotating-brand-manifesto",
+    "editable-focus-gallery",
+    "scroll-driven-work",
+    "video-portfolio"
   ]
 }
