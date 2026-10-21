@@ -1,7 +1,7 @@
 {
-  "versao": "4.10.0",
-  "descricao": "Abertura editorial, cursor contextual, manifesto e galeria de imagens e vídeos editável",
-  "version": "4.10.0",
+  "versao": "4.11.0",
+  "descricao": "Mobile compacto, texto com cor por rolagem, efeitos configuráveis e editor unificado com prévia mobile",
+  "version": "4.11.0",
   "security_review": "2026-10-08",
   "updated_at": "2026-10-21",
   "features": [
@@ -17,6 +17,11 @@
     "rotating-brand-manifesto",
     "editable-focus-gallery",
     "scroll-driven-work",
-    "video-portfolio"
+    "video-portfolio",
+    "mobile-scroll-gallery",
+    "scroll-reading-controls",
+    "viewport-edge-blur",
+    "organized-live-editor",
+    "mobile-preview-widths"
   ]
 }
