@@ -1,7 +1,7 @@
 {
-  "versao": "4.15.1",
-  "descricao": "Correção do START no toque, encaixe das fitas e treino em incompatibilidade de versão",
-  "version": "4.15.1",
+  "versao": "4.16.0",
+  "descricao": "Star Race sem empinado contínuo, modo de partida explícito, faísca no encaixe e convite com transição",
+  "version": "4.16.0",
   "security_review": "2026-10-08",
   "updated_at": "2026-10-22",
   "features": [
@@ -41,6 +41,12 @@
     "studio-film-gallery",
     "console-hit-testing-fix",
     "cartridge-slot-alignment",
-    "engine-mismatch-training-fallback"
+    "engine-mismatch-training-fallback",
+    "race-transient-weight-transfer",
+    "explicit-reward-mode",
+    "cartridge-electric-feedback",
+    "interactive-arcade-link",
+    "site-to-arcade-star-transition",
+    "arcade-verifier-diagnostic"
   ]
 }
