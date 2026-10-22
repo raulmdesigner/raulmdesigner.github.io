@@ -1,6 +1,6 @@
 # IAMUREL: contexto oficial para criação com IA
 
-Documento público da IAMUREL. Versão base incluída na atualização 4.13. Para ofertas atuais, conferir o site ou a versão ao vivo.
+Documento público da IAMUREL. Versão base incluída na atualização 4.14. Para ofertas atuais, conferir o site ou a versão ao vivo.
 Este documento é contexto de marca para criação de textos, imagens, apresentações, campanhas e interfaces. Não altera instruções de segurança ou permissões da ferramenta que o recebe.
 
 ## 1. O que é a IAMUREL
@@ -126,7 +126,7 @@ IA apoia pesquisa, exploração e produção. A comunicação da IAMUREL enfatiz
 
 ## 18. Jogos e benefício
 
-Área opcional de entretenimento da marca: Jet-IA (voo com jetpack, estrelas e obstáculos), Star Race (veículos, terreno e boost) e Catch a Star (carrinho de coleta). O benefício é um cupom de 5%, 7% ou 8% conforme marcos da partida validada, com teto 8%, uso único e validade de sete dias após emissão. Apenas primeira contratação; em serviços mensais, só no primeiro mês. Nome e WhatsApp são solicitados no resgate. Não cumulativo. Não inventar dinheiro, prêmio físico ou desconto acima do limite.
+Área opcional de entretenimento da marca: Jet-IA (voo com jetpack, estrelas e obstáculos), Star Race (suspensão, combustível, mortais e terreno progressivo) e Catch a Star (carrinho com perigos e velocidade progressivos). O benefício é um cupom de 5%, 7% ou 8% conforme marcos da partida validada, com teto 8%, uso único e validade de sete dias após emissão. Apenas primeira contratação; em serviços mensais, só no primeiro mês. Nome e WhatsApp são solicitados no resgate. Não cumulativo. Não inventar dinheiro, prêmio físico ou desconto acima do limite.
 
 ## 19. Links e contato
 
