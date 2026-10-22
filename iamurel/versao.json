@@ -1,7 +1,7 @@
 {
-  "versao": "4.13.0",
-  "descricao": "Jogos, cupons validados e briefing público da IAMUREL",
-  "version": "4.13.0",
+  "versao": "4.15.0",
+  "descricao": "Console com fitas, Star Race arcade, rolagem suave e vídeo integrado aos trabalhos",
+  "version": "4.15.0",
   "security_review": "2026-10-08",
   "updated_at": "2026-10-22",
   "features": [
@@ -29,6 +29,15 @@
     "reading-gradient-width",
     "arcade-three-games",
     "validated-coupons",
-    "public-ai-briefing"
+    "public-ai-briefing",
+    "minimal-game-selector",
+    "race-suspension-fuel-stunts",
+    "progressive-difficulty",
+    "drag-and-drop-console",
+    "star-loading-transition",
+    "arcade-pitch-controls",
+    "configurable-smooth-scroll",
+    "mobile-star-transform",
+    "studio-film-gallery"
   ]
 }
