@@ -1,9 +1,9 @@
 {
-  "versao": "4.12.0",
-  "descricao": "Relógio interativo, inclinação no celular, estrelas e degradê ajustável",
-  "version": "4.12.0",
+  "versao": "4.13.0",
+  "descricao": "Jogos, cupons validados e briefing público da IAMUREL",
+  "version": "4.13.0",
   "security_review": "2026-10-08",
-  "updated_at": "2026-10-21",
+  "updated_at": "2026-10-22",
   "features": [
     "faq-search",
     "contextual-whatsapp",
@@ -26,6 +26,9 @@
     "interactive-launch-clock",
     "opt-in-device-tilt",
     "adaptive-opening-reading",
-    "reading-gradient-width"
+    "reading-gradient-width",
+    "arcade-three-games",
+    "validated-coupons",
+    "public-ai-briefing"
   ]
 }
