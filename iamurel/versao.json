@@ -1,7 +1,7 @@
 {
-  "versao": "4.15.0",
-  "descricao": "Console com fitas, Star Race arcade, rolagem suave e vídeo integrado aos trabalhos",
-  "version": "4.15.0",
+  "versao": "4.15.1",
+  "descricao": "Correção do START no toque, encaixe das fitas e treino em incompatibilidade de versão",
+  "version": "4.15.1",
   "security_review": "2026-10-08",
   "updated_at": "2026-10-22",
   "features": [
@@ -38,6 +38,9 @@
     "arcade-pitch-controls",
     "configurable-smooth-scroll",
     "mobile-star-transform",
-    "studio-film-gallery"
+    "studio-film-gallery",
+    "console-hit-testing-fix",
+    "cartridge-slot-alignment",
+    "engine-mismatch-training-fallback"
   ]
 }
